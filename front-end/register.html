@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8"/>
+    <title>login form</title>
+    <link rel="stylesheet"  href="register.css">
+</head>
+
+<body>
+    <div class="account-box">
+    	<button class="close-button" onclick="window.location.href='MainPage.html'">✖</button>
+        <div class="account-title">Реєстрація</div>
+
+        <div id="name-error" class="error-message"></div>
+        <input type="text" id ="user_name" placeholder="Ім'я" class="input-field">
+
+        <div id="email-error" class="error-message"></div>
+        <input type="text" id= "user_email" placeholder="Електронна пошта" class="input-field">
+
+        <div id="password-error" class="error-message"></div>
+        <input type="text" id ="user_password" placeholder="Пароль" class="input-field">
+
+         <div id="phone-error" class="error-message"></div>
+        <input type="text" id ="user_phone" placeholder="Номер телефону" class="input-field">
+
+        <div class="business-account">
+            <input type="checkbox" id="business-checkbox">
+            <label for="business-checkbox">Бізнес акаунт</label>
+        </div>
+
+        <button class="register-button" onclick="registerUser()">Зареєструватися</button>
+        <button class="login-button" onclick="window.location.href='login.html'">Вхід</button>
+        <div id="message-after" class="after-message"></div>
+    </div>
+    <script src="mainpage.js"></script>
+</body>
+
+</html>

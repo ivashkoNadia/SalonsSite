@@ -1,0 +1,43 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #f6e5e5; /* світло-рожева заливка фону */
+    display: flex;
+    flex-direction: column; /* вирівнювання всіх елементів вертикально */
+    justify-content: flex-start; /* вирівнювання по верхньому краю сторінки */
+    align-items: center; /* центрування по горизонталі */
+     font-family: Arial, sans-serif;
+     
+}
+
+.container {
+    width: 100%;
+    padding: 0px;
+}
+
+.header {
+    background-color: transparent;
+    width: 100%;
+}
+
+.purple-bar {
+    background-color: #352961; /* фіолетовий прямокутник */
+    display: flex;
+    justify-content: center; /* центрування кнопок по горизонталі */
+    padding: 10px 0;
+}
+
+.pink-button {
+    background-color: #e6b2c6; /* рожева кнопка */
+    color: #352961;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    margin: 0 10px; /* відступи між кнопками */
+}
+
+.pink-button:hover {
+    background-color: #f6e5e5; /* колір при наведенні */
+}

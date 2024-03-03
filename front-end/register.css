@@ -1,0 +1,86 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #f6e5e5; /* світло-рожева заливка фону */
+    display: flex;
+    justify-content: center; /* центрування по горизонталі */
+    align-items: center; /* центрування по вертикалі */
+    height: 100vh; /* встановлення висоти на весь екран */
+     font-family: Arial, sans-serif;
+}
+
+.error-message{
+    color: #900048
+}
+
+.after-message{
+    color: #352961;
+     margin-top: 10px;
+}
+
+
+.account-box {
+    border-top: 27px solid #352961; /* верхня сторона рамки */
+    border-right: 3px solid #352961; /* права сторона рамки */
+    border-bottom: 3px solid #352961; /* нижня сторона рамки */
+    border-left: 3px solid #352961; /* ліва сторона рамки */
+    padding: 60px;
+    border-radius: 10px; /* закруглені кути */
+    background-color: #e6b2c6; /* рожевий колір фону */
+    width: 400px; /* ширина рамки */
+    text-align: center; /* вирівнювання тексту по центру */
+    position: relative; /* необхідно для позиціонування кнопки */
+}
+
+.account-title {
+    font-size: 26px; /* розмір заголовка */
+    color: #352961; /* фіолетовий колір тексту */
+    margin-bottom: 20px; /* відступ від заголовка до полів вводу */
+}
+
+.input-field {
+    width: calc(100% - 20px); /* ширина поля вводу, враховуючи відступи з обох боків */
+    padding: 10px; /* відступи від тексту до рамки */
+    margin-bottom: 10px; /* відступи між полями вводу */
+    border: none;
+    border-radius: 5px; /* закруглені кути */
+}
+
+.login-button,
+.register-button {
+    background-color: #352961; /* темно-фіолетовий колір кнопки */
+    color: #f6e5e5; 
+    width: calc(50% - 5px); /* ширина кнопок */
+    padding: 10px 20px; /* відступи всередині кнопок */
+    border: none;
+    border-radius: 10px; /* закруглені кути */
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 20px; /* відступ від кнопок до полів вводу */
+}
+
+.login-button:hover,
+.register-button:hover {
+    background-color: #774181; /* колір кнопок при наведенні */
+}
+
+.close-button {
+    position: absolute; /* позиціонування абсолютне */
+    top: 20px; /* відступ від верхнього краю */
+    right: 20px; /* відступ від правого краю */
+    width: 25px;
+    height: 25px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    display: flex; /* включаємо flexbox */
+    justify-content: center; /* вирівнюємо текст по центру по горизонталі */
+    align-items: center; /* вирівнюємо текст по центру по вертикалі */
+    color: #352961; /* фіолетовий колір тексту */
+    font-weight: bold; /* жирний шрифт */
+    font-size: 20px; /* розмір шрифту */
+}
+
+.business-account{
+    color: #352961;
+}
