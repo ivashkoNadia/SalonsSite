@@ -1,0 +1,57 @@
+body {
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(109.6deg, rgb(197, 173, 219) 11.2%, rgb(245, 226, 226) 91.1%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: Arial, sans-serif;
+}
+
+.input-field {
+    margin-top: 10px;
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-bottom: 10px;
+    border: none;
+    border-radius: 5px;
+}
+
+.edit-button,
+.password-button,
+.logout-button,
+.mainMenu-button {
+    background-color: #352961;
+    color: #f6e5e5;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 20px;
+}
+
+.edit-button:hover,
+.password-button:hover,
+.logout-button:hover,
+.mainMenu-button:hover,
+.small-button:hover 
+{
+    background-color: #774181;
+}
+
+.edit-form {
+    display: none; /* Початково ховаємо форму */
+}
+
+.small-button{
+    background-color: #352961;
+    color: #f6e5e5;
+    border: none;
+    padding: 5px 9px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-top: 20px;
+}

@@ -25,7 +25,7 @@ def add_user():
             errors["message"]="Користувач з такою адресою вже існує"
             return jsonify({'errors': errors})
         new_user.save_to_db()
-        errors["message"]="Користувач успішно зареєстрований"
+        return  jsonify({'message': "Користувач успішно зареєстрований"})
 
     return jsonify({'errors': errors})
 
@@ -54,22 +54,71 @@ def login_user():
         'phone': user.phone
     })
 
+@app.route('/get_our_user', methods=['GET'])
+def get_our_user():
+    data = request.get_json()
+    user_id = data.get('user_id')  # Отримуємо id користувача для редагування
+    user = User.query.filter_by(user_id=user_id).first()
+    return jsonify({
+        'user_id': user.user_id,
+        'name': user.name,
+        'email': user.email,
+        'type_user': user.type_user,
+        'phone': user.phone
+    })
 
 
+@app.route('/edit_user', methods=['POST'])
+def edit_user():
+    data = request.get_json()
+    user_id = data.get('user_id')  # Отримуємо id користувача для редагування
+    name = data.get('name')
+    phone = data.get('phone')
+
+    # Шукаємо користувача за його id в базі даних
+    user_to_edit = User.query.filter_by(user_id=user_id).first()
+
+    if user_to_edit:
+        if name:
+            user_to_edit.name = name
+
+        if phone:
+            user_to_edit.phone = phone
+
+        errors = user_to_edit.validate_user()
+        if all(value == "" for value in errors.values()):
+            db.session.merge(user_to_edit)  # Оновлення користувача
+            db.session.commit()
+            return jsonify({'message': "Дані користувача успішно оновлено"})
+        else:
+            return jsonify({'errors': str(errors)})
+    else:
+        return jsonify({'error': 'Користувача з таким id не знайдено'})
+
+@app.route('/edit_user_password', methods=['POST'])
+def edit_user_password():
+    data = request.get_json()
+    user_id = data.get('user_id')  # Отримуємо id користувача для редагування
+    password = data.get('password')
+
+    user_to_edit = User.query.filter_by(user_id=user_id).first()
+
+    if user_to_edit:
+        if password:
+            user_to_edit.password = password
+
+        errors = user_to_edit.validate_user()
+        if all(value == "" for value in errors.values()):
+            db.session.merge(user_to_edit)  # Оновлення користувача
+            db.session.commit()
+            return jsonify({'message': "Дані користувача успішно оновлено"})
+        else:
+            return jsonify({'errors': errors})
+    else:
+        return jsonify({'error': 'Користувача з таким id не знайдено'})
 
 
 if __name__ == '__main__':
     app.run(debug=True)
 
-
-
-
-#
-# @app.route('/get_user/<email>')
-# def get_user(email):
-#     user = u.User.query.filter_by(email=email).first()
-#     if user:
-#         return f"User found: {user.name}, {user.email}, {user.type_user}"
-#     else:
-#         return "User not found"
 

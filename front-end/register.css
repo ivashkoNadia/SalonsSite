@@ -1,7 +1,8 @@
 body {
     margin: 0;
     padding: 0;
-    background-color: #f6e5e5; /* світло-рожева заливка фону */
+    /*background-color: #f6e5e5;  світло-рожева заливка фону */
+    background: linear-gradient(109.6deg, rgb(197, 173, 219) 11.2%, rgb(245, 226, 226) 91.1%);
     display: flex;
     justify-content: center; /* центрування по горизонталі */
     align-items: center; /* центрування по вертикалі */
@@ -26,7 +27,8 @@ body {
     border-left: 3px solid #352961; /* ліва сторона рамки */
     padding: 60px;
     border-radius: 10px; /* закруглені кути */
-    background-color: #e6b2c6; /* рожевий колір фону */
+    /*background-color: #e6b2c6; /* рожевий колір фону */
+    background: linear-gradient(to right, rgb(270, 192, 188), rgb(221, 214, 243));
     width: 400px; /* ширина рамки */
     text-align: center; /* вирівнювання тексту по центру */
     position: relative; /* необхідно для позиціонування кнопки */

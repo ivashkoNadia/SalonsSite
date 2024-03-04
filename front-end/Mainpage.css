@@ -1,7 +1,8 @@
 body {
     margin: 0;
     padding: 0;
-    background-color: #f6e5e5; /* світло-рожева заливка фону */
+    /*background-color: #f6e5e5;  світло-рожева заливка фону */
+    background: linear-gradient(109.6deg, rgb(197, 173, 219) 11.2%, rgb(245, 226, 226) 91.1%);
     display: flex;
     flex-direction: column; /* вирівнювання всіх елементів вертикально */
     justify-content: flex-start; /* вирівнювання по верхньому краю сторінки */
@@ -28,7 +29,7 @@ body {
 }
 
 .pink-button {
-    background-color: #e6b2c6; /* рожева кнопка */
+    background-color: rgb(270, 192, 188); /*#e6b2c6;  рожева кнопка */
     color: #352961;
     border: none;
     padding: 10px 20px;

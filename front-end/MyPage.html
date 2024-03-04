@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="UTF-8"/>
+<title>My page</title>
+<link rel="stylesheet"  href="MyPage.css">
+</head>
+
+<body>
+    <div class="user-info">
+        <button class="mainMenu-button" onclick="window.location.href='MainPage.html'">Головне меню</button>
+
+        <h1>Вітаємо, <span id="username"></span>!</h1>
+        <p>Email: <span id="useremail"></span></p>
+        <p>Телефон: <span id="userphone"></span></p>
+        <p>Тип користувача: <span id="usertype"></span></p>
+
+        <!-- Кнопки для редагування та зміни пароля -->
+        <button onclick="editUser()" class="edit-button" >Редагувати</button>
+        <button onclick="changePassword()" class="password-button" >Змінити пароль</button>
+
+        <!-- Форма для редагування даних -->
+        <form id="editForm" class="edit-form">
+            <input type="text" id="editName" placeholder="Ім'я" class="input-field">
+            <input type="tel" id="editPhone" placeholder="Телефон" class="input-field">
+            <button type="submit" class="small-button" >Зберегти</button>
+        </form>
+
+        <!-- Форма для зміни пароля -->
+        <form id="passwordForm" class="edit-form">
+            <input type="password" id="oldPassword" placeholder="Поточний пароль" class="input-field">
+            <input type="password" id="newPassword" placeholder="Новий пароль" class="input-field">
+            <button type="submit" class="small-button" >Змінити пароль</button>
+        </form>
+
+        <button class="logout-button" onclick="clearSessionStorage()">Вихід</button>
+    </div>
+
+    <script>
+        // Отримуємо дані про користувача з sessionStorage
+        var userData = JSON.parse(sessionStorage.getItem('user'));
+
+        // Відображаємо дані про користувача на сторінці
+        if (userData) {
+            document.getElementById('username').textContent = userData.name;
+            document.getElementById('useremail').textContent = userData.email;
+            document.getElementById('userphone').textContent = userData.phone;
+            document.getElementById('usertype').textContent = userData.type_user === 1 ? 'Бізнес' : 'Простий';
+        }
+
+        // Функція для відображення форми редагування даних
+        function editUser() {
+            document.getElementById('editForm').style.display = 'block';
+            document.getElementById('passwordForm').style.display = 'none';
+        }
+
+        // Функція для відображення форми зміни пароля
+        function changePassword() {
+            document.getElementById('editForm').style.display = 'none';
+            document.getElementById('passwordForm').style.display = 'block';
+        }
+
+        function clearSessionStorage() {
+            sessionStorage.clear();
+            window.location.href = "MainPage.html";
+
+        }
+
+        // function updateUserStorage(){
+        //     var data = { user_id: userData.user_id };
+        //     var xhr = new XMLHttpRequest();
+        //     xhr.open("POST", "http://127.0.0.1:5000/get_our_user");
+        //     xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+
+        //     xhr.onreadystatechange = function() {
+        //     if (xhr.readyState === XMLHttpRequest.DONE) {
+        //         if (xhr.status === 200) {
+        //             var response = JSON.parse(xhr.responseText);
+        //             .setItem('user', JSON.stringify(response));
+        //             }
+        //     }
+        // };
+        //     xhr.send(JSON.stringify(data));
+        // }
+
+
+        // // Отримуємо дані з форми редагування та змінюємо їх у sessionStorage
+        // document.getElementById('editForm').addEventListener('submit', function(event) {
+        //     event.preventDefault();
+        //     var newName = document.getElementById('editName').value;
+        //     var newEmail = document.getElementById('editEmail').value;
+        //     var newPhone = document.getElementById('editPhone').value;
+
+        //     // Оновлюємо дані в об'єкті користувача
+        //     userData.name = newName;
+        //     userData.email = newEmail;
+        //     userData.phone = newPhone;
+
+        //     // Оновлюємо дані в sessionStorage
+        //     sessionStorage.setItem('user', JSON.stringify(userData));
+
+        //     // Оновлюємо відображення на сторінці
+        //     document.getElementById('username').textContent = newName;
+        //     document.getElementById('useremail').textContent = newEmail;
+        //     document.getElementById('userphone').textContent = newPhone;
+
+        //     // Приховуємо форму редагування
+        //     document.getElementById('editForm').style.display = 'none';
+        // });
+
+
+    // Отримуємо дані з форми редагування та змінюємо їх у sessionStorage
+    document.getElementById('editForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    var newName = document.getElementById('editName').value;
+    var newPhone = document.getElementById('editPhone').value;
+
+    // Створюємо об'єкт даних для відправки на сервер
+    var data = {
+        user_id: userData.user_id,
+        name: newName,
+        phone: newPhone
+    };
+
+    // Відправляємо дані на сервер за допомогою XMLHttpRequest
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "http://127.0.0.1:5000/edit_user");
+    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                var response = JSON.parse(xhr.responseText);
+                alert(response.message); // Виводимо відповідь сервера
+                //updateUserStorage()
+            } else {
+                alert("Помилка: " + xhr.status); // Виводимо помилку, якщо статус не 200
+            }
+        }
+    };
+    xhr.send(JSON.stringify(data));
+
+    // Оновлюємо відображення на сторінці
+    document.getElementById('username').textContent = userData.name;
+    document.getElementById('userphone').textContent = userData.phone;
+
+    // Приховуємо форму редагування
+    document.getElementById('editForm').style.display = 'none';
+});
+
+
+        
+
+        // Функція для зміни пароля
+        document.getElementById('passwordForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            var oldPassword = document.getElementById('oldPassword').value;
+            var newPassword = document.getElementById('newPassword').value;
+
+            // Оновлюємо пароль в об'єкті користувача
+            userData.password = newPassword;
+
+            // Оновлюємо дані в sessionStorage
+            sessionStorage.setItem('user', JSON.stringify(userData));
+
+            // Повідомлення про успішну зміну пароля
+            alert('Пароль успішно змінено!');
+
+            // Приховуємо форму зміни пароля
+            document.getElementById('passwordForm').style.display = 'none';
+        });
+    </script>
+</body>
+</html>
+
