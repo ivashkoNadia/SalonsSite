@@ -59,6 +59,7 @@ def get_our_user():
     data = request.get_json()
     user_id = data.get('user_id')  # Отримуємо id користувача для редагування
     user = User.query.filter_by(user_id=user_id).first()
+    print(user.name)
     return jsonify({
         'user_id': user.user_id,
         'name': user.name,
@@ -91,7 +92,7 @@ def edit_user():
             db.session.commit()
             return jsonify({'message': "Дані користувача успішно оновлено"})
         else:
-            return jsonify({'errors': str(errors)})
+            return jsonify({'errors': errors})
     else:
         return jsonify({'error': 'Користувача з таким id не знайдено'})
 
@@ -100,20 +101,22 @@ def edit_user_password():
     data = request.get_json()
     user_id = data.get('user_id')  # Отримуємо id користувача для редагування
     password = data.get('password')
+    new_password = data.get('new_password')
+
+    if password=="" or new_password=="": return jsonify({'error': 'Ви ввели не всі дані'})
 
     user_to_edit = User.query.filter_by(user_id=user_id).first()
+    if user_to_edit.password != password: return jsonify({'error': 'Ви ввели не правильний пароль'})
 
     if user_to_edit:
-        if password:
-            user_to_edit.password = password
-
+        user_to_edit.password = new_password
         errors = user_to_edit.validate_user()
         if all(value == "" for value in errors.values()):
             db.session.merge(user_to_edit)  # Оновлення користувача
             db.session.commit()
             return jsonify({'message': "Дані користувача успішно оновлено"})
         else:
-            return jsonify({'errors': errors})
+            return jsonify({'error': 'Новий пароль повинен містити цифри і букви, мінімум 8 символів'})
     else:
         return jsonify({'error': 'Користувача з таким id не знайдено'})
 
