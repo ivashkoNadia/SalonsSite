@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="UTF-8"/>
+<title>My salons</title>
+<style>
+  .salon-container {
+    border: 2px solid purple; /* фіолетова рамка */
+    margin: 10px;
+    padding: 10px;
+    width: 300px;
+  }
+</style>
+<link rel="stylesheet" >
+</head>
+<body>
+<div id="salonList"></div>
+
+<script>
+  // Функція для отримання доступних салонів і відображення їх на сторінці
+  function getAvailableSalons() {
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", "http://127.0.0.1:5000/available_salons");
+
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState === XMLHttpRequest.DONE) {
+        if (xhr.status === 200) {
+          var response = JSON.parse(xhr.responseText);
+          var salons = response.salons;
+
+          var salonListContainer = document.getElementById("salonList");
+
+          salons.forEach(function(salon) {
+            var salonContainer = document.createElement("div");
+            salonContainer.classList.add("salon-container");
+
+            var salonName = document.createElement("p");
+            salonName.textContent = "Name: " + salon.name;
+            salonContainer.appendChild(salonName);
+
+            var salonRating = document.createElement("p");
+            salonRating.textContent = "Rating: " + salon.rating;
+            salonContainer.appendChild(salonRating);
+
+            var salonDistrict = document.createElement("p");
+            salonDistrict.textContent = "Location: " + salon.district;
+            salonContainer.appendChild(salonDistrict);
+
+            salonListContainer.appendChild(salonContainer);
+          });
+        } else {
+          console.error("Error:", xhr.status);
+        }
+      }
+    };
+
+    xhr.send();
+  }
+
+  // Викликати функцію для отримання доступних салонів
+  getAvailableSalons();
+</script>
+</body>
+</html>

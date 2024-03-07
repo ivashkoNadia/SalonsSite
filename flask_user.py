@@ -1,7 +1,10 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from Entity.User import db, User
+from Entity.Salons import db, Salon
 import main_data
+import base64
+
 
 app = Flask(__name__)
 CORS(app)
@@ -119,6 +122,30 @@ def edit_user_password():
             return jsonify({'error': 'Новий пароль повинен містити цифри і букви, мінімум 8 символів'})
     else:
         return jsonify({'error': 'Користувача з таким id не знайдено'})
+
+
+
+@app.route('/available_salons', methods=['GET'])
+def get_salons_availavle():
+    salons = Salon.query.filter_by(approve=1).all()
+
+    salon_data = [{'id': salon.id, 'district': salon.district, 'name': salon.name, 'rating': salon.rating,
+                   'photo': base64.b64encode(salon.photo).decode('utf-8') if salon.photo else None} for salon in salons]
+
+    return jsonify({'salons': salon_data})
+
+
+@app.route('/add_photo_to_salon')
+def add_photo_to_salon():
+    salon = Salon.query.filter_by(id=1).first()
+    if salon:
+        photo_path = "C:/Users/Nadiia/Desktop/зображення_viber_2021-11-19_12-56-35-421.jpg"
+        with open(photo_path, "rb") as photo_file:
+            salon.photo = photo_file.read()
+        db.session.commit()
+        return "Фото успішно додано до салону"
+    else:
+        return "Салон з вказаним id не знайдено"
 
 
 if __name__ == '__main__':
