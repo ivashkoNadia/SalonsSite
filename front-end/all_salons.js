@@ -29,22 +29,53 @@ function getAvailableSalons() {
 
 
             var salonName = document.createElement("p");
-            salonName.textContent = "Name: " + salon.name;
+            salonName.classList.add("name-salon");
+            salonName.textContent = salon.name;
             salonContainer.appendChild(salonName);
 
-            var salonRating = document.createElement("p");
-            salonRating.textContent = "Rating: " + salon.rating;
-            salonContainer.appendChild(salonRating);
+            var salonImageContainer = document.createElement("div");
+            salonImageContainer.classList.add("salon-image-container"); // Додайте клас для стилізації за допомогою CSS
+            salonContainer.appendChild(salonImageContainer);
+
+            var salonImage = document.createElement("img");
+            salonImage.src = "photos/clipart-map-location.png"; // Шлях до фото відносно кореня сайту
+            salonImage.classList.add("salon-image"); // Додайте клас для стилізації за допомогою CSS
+            salonImageContainer.appendChild(salonImage);
+
 
             var salonDistrict = document.createElement("p");
-            salonDistrict.textContent = "Location: " + salon.district;
+            salonDistrict.classList.add("location-salon");
+            salonDistrict.textContent = salon.district;
             salonContainer.appendChild(salonDistrict);
 
-            // if (salon.photo) {
-            //     var img = document.createElement('img');
-            //     img.src = "data:image/jpeg;base64," + salon.photo;
-            //     salonContainer.appendChild(img);
-            // }
+            var salonRating = document.createElement("p");
+            salonRating.classList.add("rating-salon");
+            salonRating.textContent = salon.rating;
+            salonContainer.appendChild(salonRating);
+
+            // var salonDetailsButton = document.createElement("button");
+            // salonDetailsButton.classList.add("button-details");
+            // salonDetailsButton.textContent = "Деталі";
+            
+            // salonDetailsButton.addEventListener("click", function() {
+            //     window.location.href = "http://127.0.0.1:5000/salon_details/{{ salon.id }}";
+
+            // });
+            // salonContainer.appendChild(salonDetailsButton);
+
+            var salonDetailsButton = document.createElement("button");
+            salonDetailsButton.classList.add("button-details");
+            salonDetailsButton.textContent = "Деталі";
+            
+            salonDetailsButton.addEventListener("click", function() {
+                var salonId = salon.id;
+                sessionStorage.setItem('salon', salonId);
+                    window.location.href = "ChooseSalon.html";
+            });
+            salonDetailsButton.setAttribute("data-salon-id", "{{ salon.id }}"); // Додайте атрибут data-salon-id зі значенням ID салону
+            salonContainer.appendChild(salonDetailsButton);
+
+
 
             salonListContainer.appendChild(salonContainer);
           });

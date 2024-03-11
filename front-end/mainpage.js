@@ -1,14 +1,14 @@
-const store = {
-  user: {
-    "id": "",
-    "name": "",
-    "email": "",
-    "phone": "",
-    "type": "", 
-  },
-  salons: {},
-  records: {}  
-}
+// const store = {
+//   user: {
+//     "id": "",
+//     "name": "",
+//     "email": "",
+//     "phone": "",
+//     "type": "", 
+//   },
+//   salons: {},
+//   records: {}  
+// }
 
 function handleMyAccountClick() {
     // Перевіряємо, чи у користувача є дані у sessionStorage

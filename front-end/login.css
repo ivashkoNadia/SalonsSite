@@ -1,16 +1,12 @@
  body {
     margin: 0;
     padding: 0;
-    /*background-color: #f6e5e5;  світло-рожева заливка фону */
-    /*background: linear-gradient(109.6deg, rgb(177, 173, 219) 11.2%, rgb(245, 226, 226) 91.1%);*/
-    /*background: linear-gradient(104.3deg, rgb(253, 243, 243) 10.9%, rgb(248, 231, 231) 27.8%, rgb(160, 112, 161) 101.7%);*/
-    /*background: linear-gradient(to right, rgb(221, 214, 243), rgb(250, 172, 168));*/
     background: linear-gradient(109.6deg, rgb(197, 173, 219) 11.2%, rgb(245, 226, 226) 91.1%);
     display: flex;
     justify-content: center; /* центрування по горизонталі */
     align-items: center; /* центрування по вертикалі */
     height: 100vh; /* встановлення висоти на весь екран */
-     font-family: Arial, sans-serif;
+    font-family: Arial, sans-serif;
 }
 
 .message{
@@ -26,10 +22,6 @@
     padding: 60px;
     border-radius: 10px; /* закруглені кути */
     background: linear-gradient(to right, rgb(255.5, 193, 211.5), rgb(221, 214, 243));
-
-    /*background: linear-gradient(to right, rgb(260.5, 193, 211.5), rgb(221, 214, 243));*/
-    /*background: linear-gradient(to right, rgb(270, 192, 188), rgb(221, 214, 243));*/
-    /*background: linear-gradient(270deg, rgb(253, 243, 243) 10.9%, rgb(248, 231, 231) 27.8%, rgb(160, 112, 161) 101.7%);*/
     width: 400px; /* ширина рамки */
     text-align: center; /* вирівнювання тексту по центру */
 }
@@ -48,33 +40,28 @@
     border-radius: 5px; /* закруглені кути */
 }
 
-
-.login-button {
-    background-color: #352961; /* фіолетовий колір кнопки */
-    color: #f6e5e5; /* білий колір тексту */
+.login-button,
+.register-button {
+    background-color: #352961; /* темно-фіолетовий колір кнопки */
+    color: #f6e5e5; 
+    width: calc(50% - 5px); /* ширина кнопок */
+    padding: 10px 20px; /* відступи всередині кнопок */
     border: none;
-    padding: 10px 20px;
     border-radius: 10px; /* закруглені кути */
     cursor: pointer;
     font-size: 16px;
     margin-top: 20px; /* відступ від кнопок до полів вводу */
 }
 
-.register-button {
-    background-color: #352961; /* темно-фіолетовий колір кнопки */
-    color: #f6e5e5; /* білий колір тексту */
-    border: none;
-    padding: 10px 20px;
-    border-radius: 10px; /* закруглені кути */
-    cursor: pointer;
-    font-size: 16px;
-}
-.login-button:hover {
+
+.login-button:hover,
+.register-button:hover  {
     background-color: #774181; /* колір при наведенні */
 }
-.register-button:hover {
-    background-color: #774181; /* колір при наведенні */
+/*.register-button:hover {
+    background-color: #774181; 
 }
+*/
 
 .close-button {
     position: absolute; /* змінено на absolute */

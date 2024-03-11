@@ -1,15 +1,17 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
-from Entity.User import db, User
-from Entity.Salons import db, Salon
+from flask_sqlalchemy import SQLAlchemy
+from Entity.User import User, Salon, Service, Appointment, db
+# from Entity.Salons import Salon, db
 import main_data
 import base64
-
+# db = SQLAlchemy()
 
 app = Flask(__name__)
 CORS(app)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = main_data.DB_CONNECTION
+# db = SQLAlchemy(app)  # Ініціалізуємо об'єкт SQLAlchemy
 db.init_app(app)
 
 @app.route('/add_user', methods=['POST'])
@@ -139,13 +141,58 @@ def get_salons_availavle():
 def add_photo_to_salon():
     salon = Salon.query.filter_by(id=1).first()
     if salon:
-        photo_path = "C:/Users/Nadiia/Desktop/зображення_viber_2021-11-19_12-56-35-421.jpg"
+        photo_path = "C:/Users/Nadiia/Desktop/_17_.png"
+        # C:\Users\Nadiia\Downloads
         with open(photo_path, "rb") as photo_file:
             salon.photo = photo_file.read()
         db.session.commit()
         return "Фото успішно додано до салону"
     else:
         return "Салон з вказаним id не знайдено"
+
+
+@app.route('/salon_details', methods=['POST'])
+def salon_details():
+    data = request.get_json()
+    salon_id = data.get('salon_id')
+    salon = Salon.query.get(int(salon_id))
+    if salon:
+        salon_data = {
+            "id": salon.id,
+            "district": salon.district,
+            "name": salon.name,
+            'photo': base64.b64encode(salon.photo).decode('utf-8') if salon.photo else None,
+            "rating": salon.rating,
+            "approve": salon.approve,
+            "street": salon.street,
+            "social": salon.social
+        }
+        return jsonify({'salon': salon_data})
+    else:
+        return jsonify({'error': 'Салон з вказаним ID не знайдено'})
+
+@app.route('/salon_services', methods=['POST'])
+def salon_services():
+    data = request.get_json()
+    salon_id = data.get('salon_id')
+    salon_services = Service.query.filter_by(salon_id=int(salon_id)).all()
+
+    if not salon_services:
+        return jsonify({'message': 'No services found for the specified salon ID'}), 404
+
+    serialized_services = []
+    for service in salon_services:
+        serialized_services.append({
+            'id': service.id,
+            'salon_id': service.salon_id,
+            'name': service.name,
+            'price': service.price
+        })
+
+    # Return the serialized services
+    return jsonify({'services':serialized_services})
+
+
 
 
 if __name__ == '__main__':

@@ -11,7 +11,7 @@
     <div class="user-info">
         <button class="mainMenu-button" onclick="window.location.href='MainPage.html'">Головне меню</button>
 
-        <h1>Вітаємо, <span id="username"></span>!</h1>
+        <h1>Вітаємо, <span id="username"></span>!</h1> <!--span для динамічного встановлення в js-->
         <p>Email: <span id="useremail"></span></p>
         <p>Телефон: <span id="userphone"></span></p>
         <p>Тип користувача: <span id="usertype"></span></p>
@@ -35,7 +35,7 @@
             <button type="submit" class="small-button" >Змінити пароль</button>
         </form>
 
-        <button class="logout-button" onclick="clearSessionStorage()">Вихід</button>
+        <button class="logout-button" onclick="clearSessionStorage()">Вихід з акаунта</button>
     </div>
 
     <script>
@@ -70,6 +70,9 @@
 
 
     ///////////////// Редагування телефону і Імені/////////////////////////////////////
+
+    // додавання обробник подій до форми
+    //активується коли користувач натискає кнопку з типом "submit" 
     document.getElementById('editForm').addEventListener('submit', function(event) {
     event.preventDefault();
     var newName = document.getElementById('editName').value;
@@ -122,6 +125,7 @@
 
 
     ///////////////////// Функція для зміни пароля//////////////////////////////////
+
 document.getElementById('passwordForm').addEventListener('submit', function(event) {
     event.preventDefault();
     var oldPassword = document.getElementById('oldPassword').value;

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8"/>
+    <title>My page</title>
+    <link rel="stylesheet" href="ChooseSalon.css">
+</head>
+
+<body>
+    <div class="header">
+        <div class="purple-bar">
+            <button onclick="window.location.href='MainPage.html'" class="pink-button">Головне меню</button>
+            <button id="myAccountButton" class="pink-button">Мій акаунт</button>
+            <button class="pink-button">Записи</button>
+        </div>
+    </div>
+
+    <div id="salonDetails" >
+        <span class = salonName  id="salonName"></span><br>
+        <span class =salonDistrict id="salonDistrict"></span><br>
+        <span class = salonStreet id="salonStreet"></span><br>
+        <span class = salonRating id="salonRating"></span><br>
+        <span class = salonSocial id="salonSocial"></span><br>
+    </div>
+
+    <form id="registrationForm" class="registrationForm">
+        <div class="reserv-title">Здійснити запис</div>
+        <label for="procedure">Оберіть процедуру:</label>
+        <select id="procedure" name="procedure">
+            <!-- Опції для випадаючого списку процедур -->
+        </select><br><br>
+
+        <label for="date">Оберіть дату:</label>
+        <input type="date" id="date" name="date"><br><br>
+
+        <label for="time">Оберіть час:</label>
+        <input type="time" id="time" name="time"><br><br>
+
+        <button class = "reserv-button" type="button" onclick="register()">Записатися</button>
+    </form>
+    <div class="feedback-title">Відгуки</div>
+
+    <div class="rating">
+    <span class="star" data-value="1">&#9733;</span>
+    <span class="star" data-value="2">&#9733;</span>
+    <span class="star" data-value="3">&#9733;</span>
+    <span class="star" data-value="4">&#9733;</span>
+    <span class="star" data-value="5">&#9733;</span>
+    </div>
+    <button id="submitBtn">Відправити</button>
+
+
+
+
+    <script src="mainpage.js"></script>
+    <script>
+        function getSalon() {
+            // Отримати ідентифікатор салону з sessionStorage
+            var salonId = sessionStorage.getItem('salon');
+
+            // Перевірка, чи отримано ідентифікатор салону
+            if (salonId) {
+                var data = {
+                    salon_id: salonId
+                };
+
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "http://127.0.0.1:5000/salon_details");
+                xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === XMLHttpRequest.DONE) {
+                        if (xhr.status === 200) {
+                            var response = JSON.parse(xhr.responseText);
+                            var salon = response.salon;
+
+                            // Відображення отриманих даних на сторінці у відповідних <span> елементах
+                            document.getElementById("salonDistrict").textContent = "⚲ " + salon.district+" р-н";
+                            document.getElementById("salonName").textContent =  salon.name;
+                            document.getElementById("salonRating").textContent = "Рейтинг: " + salon.rating + "☆";
+                            document.getElementById("salonStreet").textContent =  "Вул."+salon.street;
+                            document.getElementById("salonSocial").textContent = "Соціальні мережі ⌕: " + salon.social;
+
+                            var photoPlace = document.createElement("div");
+                            photoPlace.classList.add("photo-place");
+                            document.getElementById("salonDetails").appendChild(photoPlace);
+                            if (salon.photo) {
+                                var img = document.createElement('img');
+                                img.src = "data:image/jpeg;base64," + salon.photo;
+                                photoPlace.appendChild(img);
+                            }
+
+                        } else {
+                            console.error('Помилка отримання даних з сервера. Статус:', xhr.status);
+                        }
+                    }
+                };
+
+                xhr.send(JSON.stringify(data));
+            } else {
+                console.error('Ідентифікатор салону не був збережений у sessionStorage');
+            }
+        }
+
+        function get_services_in_Salon() {
+    // Отримати ідентифікатор салону з sessionStorage
+    var salonId = sessionStorage.getItem('salon');
+
+    // Перевірка, чи отримано ідентифікатор салону
+    if (salonId) {
+        var data = {
+            salon_id: salonId
+        };
+
+        // Надіслати запит на сервер
+        fetch('http://127.0.0.1:5000/salon_services', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(data => {
+
+            var procedureSelect = document.getElementById('procedure');
+
+             // Створення першого елемента списку зі значенням "-"
+            var defaultOption = document.createElement('option');
+            defaultOption.value = 0;
+            defaultOption.textContent = '-';
+            procedureSelect.appendChild(defaultOption);
+
+            // Додавання опцій з отриманими даними
+            data.services.forEach(service => {
+                var option = document.createElement('option');
+                option.value = service.id;
+                option.textContent = service.name;
+                procedureSelect.appendChild(option);
+            });
+
+
+            // Отримання таблиці для відображення даних
+            var table = document.createElement('table');
+            table.classList.add('services-table');
+            // Створення заголовка таблиці
+            var headerRow = table.insertRow();
+            var nameHeader = headerRow.insertCell();
+            nameHeader.textContent = 'Процедура';
+            var priceHeader = headerRow.insertCell();
+            priceHeader.textContent = 'Ціна';
+            // Додавання отриманих даних до таблиці
+            data.services.forEach(service => {
+                var row = table.insertRow();
+                var nameCell = row.insertCell();
+                nameCell.textContent = service.name;
+                var priceCell = row.insertCell();
+                priceCell.textContent = service.price;
+
+            });
+
+            // Додавання таблиці на сторінку
+            document.body.appendChild(table);
+        })
+        .catch(error => console.error('Error:', error));
+    } else {
+        console.error('Ідентифікатор салону не був збережений у sessionStorage');
+    }
+}
+
+
+
+
+        getSalon();
+        get_services_in_Salon();
+
+
+        const stars = document.querySelectorAll('.star');
+let selectedStar = 0;
+
+stars.forEach(star => {
+  star.addEventListener('click', () => {
+    const value = parseInt(star.getAttribute('data-value'));
+    selectedStar = value;
+    highlightStars(value);
+  });
+});
+
+function highlightStars(value) {
+  stars.forEach((star, index) => {
+    if (index < value) {
+      star.style.color = '#352961';
+    } else {
+      star.style.color = '#f6e5e5';
+    }
+  });
+}
+
+document.getElementById('submitBtn').addEventListener('click', () => {
+  alert(`Ви обрали ${selectedStar} зірку(и)`);
+});
+
+    </script>
+</body>
+
+</html>
+
+

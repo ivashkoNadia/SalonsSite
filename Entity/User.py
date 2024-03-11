@@ -1,11 +1,5 @@
-from flask_sqlalchemy import SQLAlchemy
-from flask import Flask
-from flask import request
-import  main_data
-from flask_cors import CORS
 import re
 from flask_sqlalchemy import SQLAlchemy
-
 db = SQLAlchemy()
 
 class User(db.Model):
@@ -17,12 +11,12 @@ class User(db.Model):
     type_user = db.Column(db.String(50))
     phone = db.Column(db.String(20))
 
-    def __init__(self, name, email, password, type_user, phone):
-        self.name = name
-        self.email = email
-        self.password = password
-        self.type_user = type_user
-        self.phone = phone
+    # def __init__(self, name, email, password, type_user, phone):
+    #     self.name = name
+    #     self.email = email
+    #     self.password = password
+    #     self.type_user = type_user
+    #     self.phone = phone
 
     def save_to_db(self):
         db.session.add(self)
@@ -60,3 +54,30 @@ class User(db.Model):
             return True
         else:
             return False
+
+
+class Salon(db.Model):
+    __tablename__ = 'Salons'
+    id = db.Column(db.Integer, primary_key=True)
+    district = db.Column(db.String(100), nullable=False)
+    name = db.Column(db.String(100), nullable=False)
+    rating = db.Column(db.Float)
+    approve = db.Column(db.Integer)
+    photo = db.Column(db.LargeBinary)
+    street = db.Column(db.Text)
+    social = db.Column(db.Text)
+
+class Appointment(db.Model):
+    __tablename__ = 'Appointment'
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, nullable=False)
+    salon_id = db.Column(db.Integer, db.ForeignKey('salon.id'), nullable=False)
+    service_id = db.Column(db.Integer, db.ForeignKey('service.id'), nullable=False)
+    datetime = db.Column(db.DateTime, nullable=False)
+
+class Service(db.Model):
+    __tablename__ = 'Services'
+    id = db.Column(db.Integer, primary_key=True)
+    salon_id = db.Column(db.Integer, db.ForeignKey('salon.id'), nullable=False)
+    name = db.Column(db.String(100), nullable=False)
+    price = db.Column(db.Float, nullable=False)
