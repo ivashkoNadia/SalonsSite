@@ -26,7 +26,7 @@ body {
     display: flex;
     justify-content: center; /* центрування кнопок по горизонталі */
     padding: 10px 0;
-    
+
 }
 
 .pink-button {
@@ -100,4 +100,16 @@ body {
     width: 20px;
     height: 20px;
    margin-left: 5px;
+   position: relative;
+}
+
+.rating-salon{
+
+}
+
+.location-salon{
+     position: relative;
+    left: 30px;
+    top:  1px;
+    font-size: 18px; 
 }

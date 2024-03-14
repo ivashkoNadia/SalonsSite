@@ -12,7 +12,7 @@
         <div class="purple-bar">
             <button onclick="window.location.href='MainPage.html'" class="pink-button">Головне меню</button>
             <button id="myAccountButton" class="pink-button">Мій акаунт</button>
-            <button class="pink-button">Записи</button>
+            <button class="pink-button">Мої записи</button>
         </div>
     </div>
 
@@ -35,21 +35,32 @@
         <input type="date" id="date" name="date"><br><br>
 
         <label for="time">Оберіть час:</label>
-        <input type="time" id="time" name="time"><br><br>
+        <!-- <input type="time" id="time" name="time"><br><br> -->
+        <select id="time" name="time">
+            <option value="09:00">09:00</option>
+            <option value="11:00">11:00</option>
+            <option value="13:00">13:00</option>
+            <option value="15:00">15:00</option>
+            <option value="17:00">17:00</option>
+            <option value="19:00">19:00</option>
+        </select>
 
         <button class = "reserv-button" type="button" onclick="register()">Записатися</button>
     </form>
     <div class="feedback-title">Відгуки</div>
-
-    <div class="rating">
-    <span class="star" data-value="1">&#9733;</span>
-    <span class="star" data-value="2">&#9733;</span>
-    <span class="star" data-value="3">&#9733;</span>
-    <span class="star" data-value="4">&#9733;</span>
-    <span class="star" data-value="5">&#9733;</span>
+    <div class="feedback-div">
+        <textarea class="feedback-input" id ="text_feedback" placeholder="Напишіть свій відгук тут..."></textarea>
+        <div>
+        <div class="rating">
+        <span class="star" data-value="1">&#9733;</span>
+        <span class="star" data-value="2">&#9733;</span>
+        <span class="star" data-value="3">&#9733;</span>
+        <span class="star" data-value="4">&#9733;</span>
+        <span class="star" data-value="5">&#9733;</span>
+        </div>
+        <button id="submitBtn" class="reserv-button">Відправити</button>
+        </div>
     </div>
-    <button id="submitBtn">Відправити</button>
-
 
 
 
@@ -161,6 +172,11 @@
 
             // Додавання таблиці на сторінку
             document.body.appendChild(table);
+
+            var mes = document.createElement('p');
+            mes.textContent="*Вказано мінімальну ціну за послугу";
+            mes.classList.add('remark-table');
+            document.body.appendChild(mes); 
         })
         .catch(error => console.error('Error:', error));
     } else {
@@ -173,6 +189,99 @@
 
         getSalon();
         get_services_in_Salon();
+
+
+
+        function register() {
+    // Отримуємо дані з форми
+    var procedure = document.getElementById("procedure").value;
+    var date = document.getElementById("date").value;
+    var time = document.getElementById("time").value;
+
+    // Отримуємо user_id з sessionStorage
+    var userId = sessionStorage.getItem('user');
+
+    // Отримуємо salon_id з sessionStorage
+    var salonId = sessionStorage.getItem('salon');
+
+    // Формуємо об'єкт з даними
+    var data = {
+        user_id: userId,
+        salon_id: salonId,
+        service_id: procedure,
+        datetime: date + " " + time
+    };
+
+    // Відправляємо дані на сервер
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "http://127.0.0.1:5000/add_appointment");
+    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                var response = JSON.parse(xhr.responseText);
+                if (response.message) {
+                    alert(response.message);
+                }
+                 else {
+                    alert(response.error);
+                }
+            } else {
+                alert("Помилка під час реєстрації. Спробуйте ще раз.");
+            }
+        }
+    };
+    xhr.send(JSON.stringify(data));
+}
+
+
+function addFeedback() {
+    // Отримання значень з поля введення тексту відгуку та рейтингу
+    var text = document.getElementById('text_feedback').value;
+    var rating = selectedStar; // Використовуємо значення змінної, яку ми визначили раніше
+
+    // Отримання ідентифікатора користувача та салону з sessionStorage
+    var user_id = sessionStorage.getItem('user');
+    var salon_id = sessionStorage.getItem('salon');
+
+    // Створення об'єкту з даними
+    var data = {
+        user_id: user_id,
+        text: text,
+        rating: rating,
+        salon_id: salon_id
+    };
+
+   // Відправляємо дані на сервер
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "http://127.0.0.1:5000/add_feedback");
+    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                var response = JSON.parse(xhr.responseText);
+                if (response.message) {
+                    alert(response.message);
+                }
+                 else {
+                    alert(response.error);
+                }
+            } else {
+                alert("Помилка під час реєстрації. Спробуйте ще раз.");
+            }
+        }
+    };
+    xhr.send(JSON.stringify(data));
+
+     document.getElementById('text_feedback').value = '';
+    
+    // Очищення вибраної зірки
+    selectedStar = 0;
+    highlightStars(selectedStar);
+}
+
+
+
 
 
         const stars = document.querySelectorAll('.star');
@@ -196,9 +305,8 @@ function highlightStars(value) {
   });
 }
 
-document.getElementById('submitBtn').addEventListener('click', () => {
-  alert(`Ви обрали ${selectedStar} зірку(и)`);
-});
+document.getElementById('submitBtn').addEventListener('click', addFeedback);
+
 
     </script>
 </body>

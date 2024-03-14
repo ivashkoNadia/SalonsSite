@@ -11,12 +11,12 @@ class User(db.Model):
     type_user = db.Column(db.String(50))
     phone = db.Column(db.String(20))
 
-    # def __init__(self, name, email, password, type_user, phone):
-    #     self.name = name
-    #     self.email = email
-    #     self.password = password
-    #     self.type_user = type_user
-    #     self.phone = phone
+    def __init__(self, name, email, password, type_user, phone):
+        self.name = name
+        self.email = email
+        self.password = password
+        self.type_user = type_user
+        self.phone = phone
 
     def save_to_db(self):
         db.session.add(self)
@@ -68,16 +68,45 @@ class Salon(db.Model):
     social = db.Column(db.Text)
 
 class Appointment(db.Model):
-    __tablename__ = 'Appointment'
+    __tablename__ = 'Appointments'
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, nullable=False)
-    salon_id = db.Column(db.Integer, db.ForeignKey('salon.id'), nullable=False)
-    service_id = db.Column(db.Integer, db.ForeignKey('service.id'), nullable=False)
+    salon_id = db.Column(db.Integer,  nullable=False)
+    service_id = db.Column(db.Integer,  nullable=False)
     datetime = db.Column(db.DateTime, nullable=False)
+
+    def __init__(self, user_id, salon_id, service_id, datetime):
+        self.salon_id=salon_id
+        self.service_id=service_id
+        self.user_id=user_id
+        self.datetime=datetime
+
+    def save_to_db(self):
+        db.session.add(self)
+        db.session.commit()
 
 class Service(db.Model):
     __tablename__ = 'Services'
     id = db.Column(db.Integer, primary_key=True)
-    salon_id = db.Column(db.Integer, db.ForeignKey('salon.id'), nullable=False)
+    salon_id = db.Column(db.Integer, nullable=False)
     name = db.Column(db.String(100), nullable=False)
     price = db.Column(db.Float, nullable=False)
+
+class Feedback(db.Model):
+    __tablename__ = 'Feedback'
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, nullable=False)
+    text = db.Column(db.Text)
+    datetime = db.Column(db.TIMESTAMP)
+    rating = db.Column(db.Integer)
+
+    def __init__(self, user_id, text, rating, salon_id, datetime):
+        self.user_id = user_id
+        self.text = text
+        self.rating = rating
+        self.salon_id = salon_id
+        self.datetime=datetime
+
+    def save_to_db(self):
+        db.session.add(self)
+        db.session.commit()

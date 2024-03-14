@@ -7,6 +7,7 @@ body {
     justify-content: flex-start; /* вирівнювання по верхньому краю сторінки */
     align-items: center; /* центрування по горизонталі */
      font-family: Arial, sans-serif;
+     overflow-y: auto; 
 }
 
 
@@ -101,6 +102,13 @@ table {
     top:  100px;
 }
 
+.remark-table{
+    position: absolute;
+    top: 85px;
+    right: 140px;
+    font-size: 14px;
+}
+
 th, td {
     border: 1px solid rgba(136, 77, 167, 0.6); /* Фіолетовий колір з прозорістю 50% */
     padding: 8px;
@@ -136,10 +144,10 @@ th, td {
     border-radius: 10px; /* закруглені кути */
     cursor: pointer;
     font-size: 16px;
-    margin-top: 0px;
     display: block;
     margin: 0 auto;
     margin-bottom: 15px;
+    margin-top: 15px;
 }
 
 
@@ -155,7 +163,7 @@ th, td {
    margin-bottom: 10px;
 }
 
-.rating {
+/*.rating {
   font-size: 30px;
   
 
@@ -164,5 +172,40 @@ th, td {
 .star {
   cursor: pointer;
   color: #f6e5e5;
+}*/
+
+
+.feedback-div {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 200px;
+   
+    
+    padding: 20px;
+    box-sizing: border-box;
 }
+
+
+.feedback-input {
+    width: 100%;
+    height: 100px;
+    resize: none;
+  }
+
+
+.rating {
+  width: 300px;
+  display: flex;
+  font-size: 30px;
+  margin-bottom: 10px;
+
+}
+
+.star {
+  cursor: pointer;
+  color: #f6e5e5;
+}
+
+
 

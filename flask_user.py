@@ -1,10 +1,12 @@
 from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
-from Entity.User import User, Salon, Service, Appointment, db
+from Entity.User import User, Salon, Service, Appointment, Feedback, db
 # from Entity.Salons import Salon, db
 import main_data
 import base64
+import json
+from datetime import datetime, timedelta
 # db = SQLAlchemy()
 
 app = Flask(__name__)
@@ -193,6 +195,74 @@ def salon_services():
     return jsonify({'services':serialized_services})
 
 
+
+@app.route('/add_appointment', methods=['POST'])
+def add_appointment():
+    data = request.get_json()
+    user_id = data.get('user_id')
+    salon_id = data.get('salon_id')
+    service_id = data.get('service_id')
+    appointment_datetime = data.get('datetime')
+
+    # Перевірка, чи не існує вже запису на цей день та час для цього користувача та процедури
+    existing_appointment = Appointment.query.filter_by(salon_id=salon_id, service_id=service_id,
+                                                       datetime=appointment_datetime).first()
+    if existing_appointment:
+        available_hours = []
+        for hour in range(9, 20, 2):  # Перевіряємо години з 09:00 до 19:00 з інтервалом 2 години
+            new_datetime = datetime.strptime(appointment_datetime, '%Y-%m-%d %H:%M').replace(hour=hour,
+                                                                                             minute=0)  # Встановлюємо годину та хвилину
+            new_datetime_str = new_datetime.strftime('%Y-%m-%d %H:%M')
+            existing_appointment = Appointment.query.filter_by(salon_id=salon_id, service_id=service_id,
+                                                               datetime=new_datetime).first()
+            if not existing_appointment:
+                split_string = new_datetime_str.split(' ')
+                # Отримання години
+                hour_ = split_string[1]
+                available_hours.append(hour_)
+        str_m= "Запис на цей час процедури вже існує \n Доступні години в цей день:"+str(available_hours)
+        return jsonify({'error': str_m})
+
+    # Перевірка, щоб запис не був раніше ніж за 2 години вперед
+    current_datetime = datetime.now()
+    appointment_datetime_obj = datetime.strptime(appointment_datetime, '%Y-%m-%d %H:%M')
+    if appointment_datetime_obj < current_datetime + timedelta(hours=2):
+        return jsonify({'error': 'Неможливо записатися раніше, ніж за дві години від поточного часу'})
+
+    user_id_dict = json.loads(user_id)
+    user_id = user_id_dict['user_id']
+
+    # Створення нового запису
+    new_appointment = Appointment(user_id=user_id, salon_id=salon_id, service_id=service_id, datetime=appointment_datetime)
+
+    new_appointment.save_to_db()
+    return jsonify({'message': 'Запис успішно створений'})
+
+@app.route('/add_feedback', methods=['POST'])
+def add_feedback():
+    data = request.get_json()
+    user_id = data.get('user_id')
+    text = data.get('text')
+    rating = data.get('rating')
+    salon_id = data.get('salon_id')
+
+    user_id_dict = json.loads(user_id)
+    user_id = user_id_dict['user_id']
+
+    # # Перевірка обов'язкових полів
+    # if not all(rating):
+    #     return jsonify({'error': 'Не всі обов\'язкові поля заповнені'})
+
+    # Створення нового об'єкту Feedback
+    new_feedback = Feedback(user_id=int(user_id), text=text, rating=int(rating), salon_id=int(salon_id), datetime=datetime.now())
+
+    try:
+        # Додавання об'єкту до бази даних
+        new_feedback.save_to_db()
+        return jsonify({'message': 'Feedback успішно доданий'})
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': 'Помилка при додаванні feedback'})
 
 
 if __name__ == '__main__':
