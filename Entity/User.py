@@ -66,6 +66,7 @@ class Salon(db.Model):
     photo = db.Column(db.LargeBinary)
     street = db.Column(db.Text)
     social = db.Column(db.Text)
+    rating_amount = db.Column(db.Integer)
 
 class Appointment(db.Model):
     __tablename__ = 'Appointments'
@@ -99,6 +100,7 @@ class Feedback(db.Model):
     text = db.Column(db.Text)
     datetime = db.Column(db.TIMESTAMP)
     rating = db.Column(db.Integer)
+    salon_id = db.Column(db.Integer)
 
     def __init__(self, user_id, text, rating, salon_id, datetime):
         self.user_id = user_id

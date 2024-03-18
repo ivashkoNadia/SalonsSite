@@ -1,0 +1,89 @@
+body {
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(109.6deg, rgb(197, 173, 219) 11.2%, rgb(245, 226, 226) 91.1%);
+    display: flex;
+    flex-direction: column; /* вирівнювання всіх елементів вертикально */
+    justify-content: flex-start; /* вирівнювання по верхньому краю сторінки */
+    align-items: center; /* центрування по горизонталі */
+     font-family: Arial, sans-serif;
+     overflow-y: auto; 
+}
+
+
+.header {
+    background-color: transparent;
+    width: 100%;
+}
+
+.purple-bar {
+    background-color: #352961; /* фіолетовий прямокутник */
+    display: flex;
+    justify-content: center; /* центрування кнопок по горизонталі */
+    padding: 10px 0;
+}
+
+.pink-button {
+    background-color: rgb(255.5, 193, 211.5); 
+    color: #352961;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    margin: 0 10px; /* відступи між кнопками */
+}
+
+.pink-button:hover {
+    background-color: #f6e5e5; /* колір при наведенні */
+}
+
+#appointments {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.appointment-container {
+  display: flex;
+  justify-content: space-between;
+  width: 1000px;
+  border: 1px solid #a294ca;
+  margin-bottom: 20px;
+}
+.name-container{
+    display: flex;
+  justify-content: space-between;
+  width: 1000px;
+  margin-bottom: 20px;
+  font-size: 26px; /* розмір заголовка */
+  color: #352961; /* фіолетовий колір тексту */
+}
+
+.appointment-date {
+  flex: 1;
+  padding: 10px;
+}
+
+.appointments-salon,
+.appointments-street,
+.appointments-service {
+  flex: 1;
+  padding: 10px;
+}
+
+
+.cancel-button {
+   background-color: #352961;
+    color: #f6e5e5;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    margin: 10px;
+}
+.cancel-button:hover {
+    background-color: #774181; /* колір при наведенні */
+}

@@ -1,6 +1,9 @@
 from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
+
+import feedback
+import appointment
 from Entity.User import User, Salon, Service, Appointment, Feedback, db
 # from Entity.Salons import Salon, db
 import main_data
@@ -157,7 +160,9 @@ def add_photo_to_salon():
 def salon_details():
     data = request.get_json()
     salon_id = data.get('salon_id')
-    salon = Salon.query.get(int(salon_id))
+    # salon = Salon.query.get(int(salon_id))
+    salon = db.session.get(Salon, int(salon_id))
+
     if salon:
         salon_data = {
             "id": salon.id,
@@ -256,6 +261,15 @@ def add_feedback():
     # Створення нового об'єкту Feedback
     new_feedback = Feedback(user_id=int(user_id), text=text, rating=int(rating), salon_id=int(salon_id), datetime=datetime.now())
 
+    salon= Salon.query.filter_by(id=int(salon_id)).first()
+    rating_amount=salon.rating_amount
+    star=salon.rating
+    new_rating= (star*rating_amount+rating)/(rating_amount+1)
+    salon.rating = new_rating
+    salon.rating_amount += 1
+    db.session.merge(salon)  # Оновлення користувача
+    db.session.commit()
+
     try:
         # Додавання об'єкту до бази даних
         new_feedback.save_to_db()
@@ -264,6 +278,15 @@ def add_feedback():
         db.session.rollback()
         return jsonify({'error': 'Помилка при додаванні feedback'})
 
+@app.route('/salon_feedback', methods=['POST'])
+def salon_feedback():
+    data = request.get_json()
+    return feedback.fun_feedback(data)
+
+@app.route('/user_appointments', methods=['POST'])
+def user_appointments():
+    data = request.get_json()
+    return appointment.fun_user_appointments(data)
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -12,7 +12,7 @@
         <div class="purple-bar">
             <button onclick="window.location.href='MainPage.html'" class="pink-button">Головне меню</button>
             <button id="myAccountButton" class="pink-button">Мій акаунт</button>
-            <button class="pink-button">Мої записи</button>
+            <button class="pink-button" onclick="window.location.href='Appointment.html'" >Мої записи</button>
         </div>
     </div>
 
@@ -62,6 +62,9 @@
         </div>
     </div>
 
+    <div class="feedback-text", id="feedback-text">
+         
+    </div>
 
 
     <script src="mainpage.js"></script>
@@ -193,6 +196,12 @@
 
 
         function register() {
+            if (!sessionStorage.getItem('user')) {
+        alert('Будь ласка, увійдіть в систему.');
+        // Якщо 'user' відсутній, можна виконати подальші дії, або просто вийти з функції
+        return;
+    }
+
     // Отримуємо дані з форми
     var procedure = document.getElementById("procedure").value;
     var date = document.getElementById("date").value;
@@ -236,6 +245,12 @@
 
 
 function addFeedback() {
+    if (!sessionStorage.getItem('user')) {
+        alert('Будь ласка, увійдіть в систему.');
+        // Якщо 'user' відсутній, можна виконати подальші дії, або просто вийти з функції
+        return;
+    }
+
     // Отримання значень з поля введення тексту відгуку та рейтингу
     var text = document.getElementById('text_feedback').value;
     var rating = selectedStar; // Використовуємо значення змінної, яку ми визначили раніше
@@ -284,7 +299,7 @@ function addFeedback() {
 
 
 
-        const stars = document.querySelectorAll('.star');
+const stars = document.querySelectorAll('.star');
 let selectedStar = 0;
 
 stars.forEach(star => {
@@ -306,6 +321,78 @@ function highlightStars(value) {
 }
 
 document.getElementById('submitBtn').addEventListener('click', addFeedback);
+
+
+// Функція, що відображає відгуки на сторінці
+function displayFeedback(feedback) {
+    var feedbackDiv = document.getElementById('feedback-text');
+
+
+    // Ітерація по кожному відгуку
+    feedback.forEach(function(feedbackItem) {
+        // Створення контейнера для відгуку
+        var feedbackContainer = document.createElement('div');
+        feedbackContainer.classList.add('feedback-container');
+
+        // Додаємо дату
+        var dateElement = document.createElement('div');
+        dateElement.classList.add('feedback-date');
+        dateElement.textContent = feedbackItem.datetime.split(' ')[0]; // Отримуємо дату (без часу)
+        feedbackContainer.appendChild(dateElement);
+
+        // Додаємо рейтинг
+        var ratingElement = document.createElement('div');
+        ratingElement.classList.add('feedback-rating');
+        ratingElement.textContent = 'Оцінка ☆: ' + feedbackItem.rating;
+        feedbackContainer.appendChild(ratingElement);
+
+        // Додаємо текст відгуку
+        var textElement = document.createElement('div');
+        textElement.classList.add('feedback-text');
+        textElement.textContent = feedbackItem.text;
+        feedbackContainer.appendChild(textElement);
+
+        // Додаємо контейнер відгуку до основного контейнера
+        feedbackDiv.appendChild(feedbackContainer);
+    });
+}
+
+// Функція для відправки запиту на сервер за відгуками
+function getFeedback() {
+    var salonId = sessionStorage.getItem('salon');
+
+    // Перевірка наявності ідентифікатора салону
+    if (salonId) {
+        var data = {
+            salon_id: salonId
+        };
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "http://127.0.0.1:5000/salon_feedback");
+        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 200) {
+                    var response = JSON.parse(xhr.responseText);
+                    var feedback = response.feedback;
+                    displayFeedback(feedback);
+
+                } else {
+                    alert('Помилка отримання відгуків');
+                }
+            }
+        };
+
+        xhr.send(JSON.stringify(data));
+    } else {
+        alert('Ідентифікатор салону не знайдено');
+    }
+}
+
+// Виклик функції при завантаженні сторінки
+getFeedback();
+
 
 
     </script>
