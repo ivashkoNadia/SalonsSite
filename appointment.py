@@ -1,7 +1,9 @@
 from Entity.User import Appointment, Salon, Service
 from flask import Flask, request, jsonify
 import json
-from datetime import datetime
+from datetime import datetime, timedelta
+import os
+from PIL import Image
 
 
 def fun_user_appointments(data):
@@ -26,7 +28,27 @@ def fun_user_appointments(data):
             'salon_name': salon.name,
             'salon_street':salon.street,
             'service_name': service.name,
+            'appointment_id':appointment.id,
             'datetime': appointment.datetime.strftime('%Y-%m-%d %H:%M')  # Перетворення в формат рядка
         })
     # Повертаємо серіалізовані дані у форматі JSON
     return jsonify({'appointments': serialized_appointments})
+
+def fun_delete_appointment(appointment_id, db):
+    try:
+        # Знаходимо запис за його ідентифікатором
+        appointment = Appointment.query.get(appointment_id)
+
+        if appointment:
+            if datetime.now() <= (appointment.datetime - timedelta(days=1)):
+                db.session.delete(appointment)
+                db.session.commit()
+                return jsonify({'message': 'Запис успішно видалено'})
+            else:
+                return jsonify({'message': 'Запис можна скасувати не пізніше, ніж за добу'})
+        else:
+            return jsonify({'message': 'Запис не знайдено'})
+
+    except Exception as e:
+        return jsonify({'message': str(e)})
+

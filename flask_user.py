@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
-
+import salon
 import feedback
 import appointment
 from Entity.User import User, Salon, Service, Appointment, Feedback, db
@@ -287,6 +287,14 @@ def salon_feedback():
 def user_appointments():
     data = request.get_json()
     return appointment.fun_user_appointments(data)
+
+@app.route('/delete_appointment/<int:appointment_id>', methods=['DELETE'])
+def delete_appointment(appointment_id):
+    return appointment.fun_delete_appointment(appointment_id, db)
+
+@app.route('/upload_photo', methods=['POST'])
+def upload_photo():
+    return salon.fun_photo(request, db)
 
 if __name__ == '__main__':
     app.run(debug=True)

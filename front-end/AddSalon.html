@@ -1,36 +1,132 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Margin vs Padding</title>
-<style>
-    .box {
-        width: 200px;
-        height: 100px;
-        background-color: #f0f0f0;
-        border: 2px solid #333;
-    }
-
-    .box-with-margin {
-        margin: 50px;
-    }
-
-    .box-with-padding {
-        padding: 0px;
-    }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Додати салон</title>
+    <link rel="stylesheet" href="AddSalon.css">
 </head>
 <body>
-    <h2>Box with Margin</h2>
-    <div class="box box-with-margin">
-        <p>Margin</p>
+  <div class="header">
+        <div class="purple-bar">
+            <button onclick="window.location.href='MainPage.html'" class="pink-button">Головне меню</button>
+            <button id="myAccountButton" class="pink-button">Мій акаунт</button>
+            <button class="pink-button" onclick="window.location.href='Appointment.html'" >Мої записи</button>
+        </div>
     </div>
 
-    <h2>Box with Padding</h2>
-    <div class="box box-with-padding">
-        <p>Padding</p>
-    </div>
+    <div class="main-block">
+      <div class="left-block">
+   <h1>Додати салон</h1>
+    <form id="uploadForm" enctype="multipart/form-data">
+        <label for="photo">Оберіть фото:</label><br>
+        <input type="file" id="photo" name="photo"><br><br>
+        <label for="district">Район розташування:</label><br>
+        <input type="text" id="district" name="district" autocomplete="off"><br><br>
+        <label for="name">Назва салону:</label><br>
+        <input type="text" id="name" name="name" autocomplete="off"><br><br>
+        <label for="street">Вулиця, номер:</label><br>
+        <input type="text" id="street" name="street" autocomplete="off"></textarea><br><br>
+        <label for="social">Соціальна мережа салону:</label><br>
+        <input type="text" id="social" name="social" autocomplete="off"></textarea><br><br>
+        <button type="submit">Загрузити</button>
+    </form>
+    <div id="message"></div>
+  </div>
+
+    <div class="add-pricedure">
+     <h1>Додати доступні послуги</h1>
+    <form id="procedureForm">
+        <div id="procedures">
+            <!-- Перший рядок з полями для введення процедури та ціни -->
+            <div>
+                <input type="text" name="procedure[]" placeholder="Введіть назву процедури" autocomplete="off">
+                <input type="text" name="price[]" placeholder="Ціна" autocomplete="off">
+                <button type="button" class="removeButton" onclick="removeProcedureField(this)">✖</button>
+            </div>
+        </div>
+        <button type="button" onclick="addProcedureField()">Додати процедуру</button>
+    </form>
+  </div>
+</div>
+
+    <script src="mainpage.js"></script>
+    <script>
+        document.getElementById('uploadForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            var formData = new FormData();
+            formData.append('photo', document.getElementById('photo').files[0]);
+            formData.append('district', document.getElementById('district').value);
+            formData.append('name', document.getElementById('name').value);
+            formData.append('street', document.getElementById('street').value);
+            formData.append('social', document.getElementById('social').value);
+            formData.append('owner_id', sessionStorage.getItem('user'));
+
+            var procedures = document.getElementsByName('procedure[]');
+            var prices = document.getElementsByName('price[]');
+
+            for (var i = 0; i < prices.length; i++) {
+              var price = parseFloat(prices[i].value);
+              if (isNaN(price) || price < 0) {
+                alert('Ціна має бути числом та не може бути від\'ємною.');
+                return; // Повертаємо функцію, якщо ціна некоректна
+              }
+            }
+
+            // Додавання даних про процедури та ціни до formData
+            for (var i = 0; i < procedures.length; i++) {
+            formData.append('procedures[]', procedures[i].value);
+            formData.append('prices[]', prices[i].value);
+            }
+
+            for (var value of formData.values()) {
+              if (!value) {
+              alert('Будь ласка, заповніть всі поля.');
+              return; // Повертаємо функцію, якщо хоча б одне поле не має значення
+              }
+            }
+
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', 'http://127.0.0.1:5000/upload_photo');
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    document.getElementById('message').textContent = 'Фото та дані про салон успішно збережено.';
+                } else {
+                    document.getElementById('message').textContent = 'Помилка при збереженні фото та даних про салон.';
+                }
+            };
+            xhr.send(formData);
+        });
+
+
+        function addProcedureField() {
+            var proceduresDiv = document.getElementById('procedures');
+            var div = document.createElement('div');
+            var input1 = document.createElement('input');
+            input1.type = 'text';
+            input1.name = 'procedure[]';
+            input1.placeholder = 'Введіть назву процедури';
+            var input2 = document.createElement('input');
+            input2.type = 'number';
+            input2.name = 'price[]';
+            input2.placeholder = 'Ціна';
+            var removeButton = document.createElement('button');
+            removeButton.type = 'button';
+            removeButton.classList.add('removeButton');
+            removeButton.textContent = '✖';
+            removeButton.onclick = function() {
+                removeProcedureField(this);
+            };
+            div.appendChild(input1);
+            div.appendChild(input2);
+            div.appendChild(removeButton);
+            proceduresDiv.appendChild(div);
+        }
+
+        function removeProcedureField(button) {
+            button.parentNode.remove();
+        }
+    </script>
 </body>
 </html>
 

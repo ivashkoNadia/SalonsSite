@@ -1,0 +1,104 @@
+body {
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(109.6deg, rgb(197, 173, 219) 11.2%, rgb(245, 226, 226) 91.1%);
+    display: flex;
+    flex-direction: column; /* вирівнювання всіх елементів вертикально */
+    justify-content: flex-start; /* вирівнювання по верхньому краю сторінки */
+    align-items: center; /* центрування по горизонталі */
+     font-family: Arial, sans-serif;
+     overflow-y: auto; 
+      color: #352961;
+}
+
+
+.header {
+    background-color: transparent;
+    width: 100%;
+}
+
+.purple-bar {
+    background-color: #352961; /* фіолетовий прямокутник */
+    display: flex;
+    justify-content: center; /* центрування кнопок по горизонталі */
+    padding: 10px 0;
+}
+
+.pink-button {
+    background-color: rgb(255.5, 193, 211.5); 
+    color: #352961;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    margin: 0 10px; /* відступи між кнопками */
+}
+
+.pink-button:hover {
+    background-color: #f6e5e5; /* колір при наведенні */
+}
+
+  #procedureForm {
+            height: 600px;
+            overflow-y: auto; /* Дозволяє прокручувати, якщо вміст перевищує висоту */
+            padding: 10px;
+        }
+
+        #procedures input, #procedures button {
+            display: inline-block; /* Розташовуємо комірки одну поруч з одною */
+            vertical-align: top; /* Вирівнюємо по верхньому краю */
+            margin-bottom: 10px; /* Відступ між комірками */
+             height: 25px; 
+
+        }
+
+        .removeButton {
+            margin-left: 10px;
+           /* Відступ кнопки від інших елементів */
+        }
+
+.add-pricedure{
+    border: 3px solid #352961; 
+    margin-top: 20px;
+    border-radius: 10px; /* закруглені кути */
+    background: linear-gradient(to right, rgb(255.5, 193, 211.5), rgb(221, 214, 243));
+    width: 500px; /* ширина рамки */
+    text-align: center; /* вирівнювання тексту по центру */
+    flex: 2;
+    height: 500px;
+    overflow-y: auto; 
+}
+
+input {
+    padding: 10px; /* відступи від тексту до рамки */
+    margin-bottom: 10px; /* відступи між полями вводу */
+    border: none;
+    border-radius: 4px; /* закруглені кути */
+}
+
+.main-block{
+    display: flex;
+    justify-content: space-between;
+}
+
+.left-block{
+    flex: 1;
+}
+
+/* Для WebKit браузерів (Chrome, Safari, Opera) */
+::-webkit-scrollbar {
+    width: 10px; /* ширина полоси прокрутки */
+}
+
+/* Трек */
+::-webkit-scrollbar-track {
+    background: #f1f1f1; /* колір фону треку */
+}
+
+/* Блок прокрутки */
+::-webkit-scrollbar-thumb {
+    background: #774181; /* колір блоку прокрутки */
+}
+
+

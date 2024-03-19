@@ -1,14 +1,22 @@
-// const store = {
-//   user: {
-//     "id": "",
-//     "name": "",
-//     "email": "",
-//     "phone": "",
-//     "type": "", 
-//   },
-//   salons: {},
-//   records: {}  
-// }
+function AddSalonButton(){
+    var userData = JSON.parse(sessionStorage.getItem('user'));
+        if (userData) {
+            if (userData.type_user == 1){
+                var addButton = document.createElement('button');
+                addButton.textContent = 'Додати салон';
+                addButton.className = 'pink-button';
+                addButton.onclick = function() {
+                     window.location.href = 'AddSalon.html';
+                };
+
+                // Отримання елементу з класом "purple-bar"
+                var purpleBar = document.querySelector('.purple-bar');
+    
+                // Додавання кнопки до "purple-bar"
+                purpleBar.appendChild(addButton);
+            }
+        }
+}
 
 function handleMyAccountClick() {
     // Перевіряємо, чи у користувача є дані у sessionStorage
@@ -123,3 +131,8 @@ function loginUser() {
 
     xhr.send(JSON.stringify(data));
 }
+
+
+window.onload = function() {
+    AddSalonButton();
+};

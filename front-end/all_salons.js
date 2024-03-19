@@ -53,16 +53,6 @@ function getAvailableSalons() {
             salonRating.textContent = salon.rating;
             salonContainer.appendChild(salonRating);
 
-            // var salonDetailsButton = document.createElement("button");
-            // salonDetailsButton.classList.add("button-details");
-            // salonDetailsButton.textContent = "Деталі";
-            
-            // salonDetailsButton.addEventListener("click", function() {
-            //     window.location.href = "http://127.0.0.1:5000/salon_details/{{ salon.id }}";
-
-            // });
-            // salonContainer.appendChild(salonDetailsButton);
-
             var salonDetailsButton = document.createElement("button");
             salonDetailsButton.classList.add("button-details");
             salonDetailsButton.textContent = "Деталі";

@@ -67,6 +67,11 @@ class Salon(db.Model):
     street = db.Column(db.Text)
     social = db.Column(db.Text)
     rating_amount = db.Column(db.Integer)
+    owner_id = db.Column(db.Integer)
+
+    def save_to_db(self):
+        db.session.add(self)
+        db.session.commit()
 
 class Appointment(db.Model):
     __tablename__ = 'Appointments'
