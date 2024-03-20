@@ -29,9 +29,9 @@
         <input type="text" id="street" name="street" autocomplete="off"></textarea><br><br>
         <label for="social">Соціальна мережа салону:</label><br>
         <input type="text" id="social" name="social" autocomplete="off"></textarea><br><br>
-        <button type="submit">Загрузити</button>
+        <button type="submit" class="purple-button">Загрузити</button>
     </form>
-    <div id="message"></div>
+    <div id="message">Перевірте дані перед відправкою</div>
   </div>
 
     <div class="add-pricedure">
@@ -45,7 +45,7 @@
                 <button type="button" class="removeButton" onclick="removeProcedureField(this)">✖</button>
             </div>
         </div>
-        <button type="button" onclick="addProcedureField()">Додати процедуру</button>
+        <button type="button" class="purple-button" onclick="addProcedureField()">Додати процедуру</button>
     </form>
   </div>
 </div>
@@ -90,9 +90,11 @@
             xhr.open('POST', 'http://127.0.0.1:5000/upload_photo');
             xhr.onload = function() {
                 if (xhr.status === 200) {
-                    document.getElementById('message').textContent = 'Фото та дані про салон успішно збережено.';
+                     var response = JSON.parse(xhr.responseText);
+                    alert(response.message);
                 } else {
-                    document.getElementById('message').textContent = 'Помилка при збереженні фото та даних про салон.';
+                  alert('Помилка при збереженні фото та даних про салон.');
+                    // document.getElementById('message').textContent = 'Помилка при збереженні фото та даних про салон.';
                 }
             };
             xhr.send(formData);
@@ -103,16 +105,17 @@
             var proceduresDiv = document.getElementById('procedures');
             var div = document.createElement('div');
             var input1 = document.createElement('input');
+            input1.classList.add("width-procedure");
             input1.type = 'text';
             input1.name = 'procedure[]';
             input1.placeholder = 'Введіть назву процедури';
             var input2 = document.createElement('input');
-            input2.type = 'number';
+            input2.type = 'text';
             input2.name = 'price[]';
             input2.placeholder = 'Ціна';
             var removeButton = document.createElement('button');
             removeButton.type = 'button';
-            removeButton.classList.add('removeButton');
+            removeButton.classList.add('removeButton2');
             removeButton.textContent = '✖';
             removeButton.onclick = function() {
                 removeProcedureField(this);

@@ -4,7 +4,7 @@ function AddSalonButton(){
             if (userData.type_user == 1){
                 var addButton = document.createElement('button');
                 addButton.textContent = 'Додати салон';
-                addButton.className = 'pink-button';
+                addButton.className = 'pink-button add_salon';
                 addButton.onclick = function() {
                      window.location.href = 'AddSalon.html';
                 };

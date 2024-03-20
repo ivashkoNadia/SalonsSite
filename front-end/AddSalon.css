@@ -34,6 +34,26 @@ body {
     font-size: 16px;
     margin: 0 10px; /* відступи між кнопками */
 }
+.purple-button{
+     background-color: #352961; /* темно-фіолетовий колір кнопки */
+    color: #f6e5e5; 
+    width: calc(50% - 30px); /* ширина кнопок */
+    padding: 10px 10px; /* відступи всередині кнопок */
+    border: none;
+    border-radius: 10px; /* закруглені кути */
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 15px; 
+    margin-bottom: 10px;
+}
+
+.purple-button:hover {
+    background-color: #774181; /* колір кнопок при наведенні */
+}
+
+.add_salon{
+    display: none;
+}
 
 .pink-button:hover {
     background-color: #f6e5e5; /* колір при наведенні */
@@ -50,7 +70,6 @@ body {
             vertical-align: top; /* Вирівнюємо по верхньому краю */
             margin-bottom: 10px; /* Відступ між комірками */
              height: 25px; 
-
         }
 
         .removeButton {
@@ -77,6 +96,11 @@ input {
     border-radius: 4px; /* закруглені кути */
 }
 
+.width-procedure{
+    margin-right: 5px;
+    margin-left: -5px;
+}
+
 .main-block{
     display: flex;
     justify-content: space-between;
@@ -84,6 +108,10 @@ input {
 
 .left-block{
     flex: 1;
+}
+
+.removeButton2{
+    margin-left: 15px;
 }
 
 /* Для WebKit браузерів (Chrome, Safari, Opera) */

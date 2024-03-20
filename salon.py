@@ -7,6 +7,10 @@ from PIL import Image
 def fun_photo(request_, db):
     photo = request_.files['photo']
     if photo:
+        allowed_formats = ['png', 'jpg']
+        if photo.filename.lower().split('.')[-1] not in allowed_formats:
+            return jsonify({'message': 'Фото повинно бути у форматі .png або .jpg'})
+
         # Відкриваємо фото за допомогою Pillow
         img = Image.open(photo)
 
@@ -20,6 +24,8 @@ def fun_photo(request_, db):
         right = (width + min_side) / 2
         bottom = (height + min_side) / 2
         img = img.crop((left, top, right, bottom))
+
+        img = img.convert('RGB')
 
         # Перетворюємо зображення у байтовий об'єкт
         img_byte_array = io.BytesIO()
