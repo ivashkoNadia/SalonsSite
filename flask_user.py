@@ -292,6 +292,11 @@ def user_appointments():
 def delete_appointment(appointment_id):
     return appointment.fun_delete_appointment(appointment_id, db)
 
+@app.route('/client_appointments', methods=['POST'])
+def get_user_appointments():
+    data = request.get_json()
+    return appointment.fun_client_appointments(data)
+
 @app.route('/upload_photo', methods=['POST'])
 def upload_photo():
     return salon.fun_photo(request, db)

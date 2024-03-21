@@ -34,7 +34,7 @@ body {
     color: #352961;
     border: none;
     padding: 10px 20px;
-    border-radius: 10px;
+    border-radius: 5px;
     cursor: pointer;
     font-size: 16px;
     margin: 0 10px; /* відступи між кнопками */
@@ -53,7 +53,7 @@ body {
     height: 230px;
     box-sizing: border-box;
     background: linear-gradient(to right, rgb(240.5, 193, 211.5), rgb(221, 214, 243));
-    border-radius: 10px;
+    border-radius: 0px;
     
 }
 
@@ -68,7 +68,7 @@ body {
     height: 100%;  
     object-fit: cover; 
      float: left;
-     border-radius: 5px; 
+     border-radius: 0px; 
 }
 
 .button-details{
@@ -76,7 +76,7 @@ body {
     color: #f6e5e5;
     border: none;
     padding: 10px 20px;
-    border-radius: 10px;
+    border-radius: 5px;
     cursor: pointer;
     font-size: 16px;
     margin-top: 20px;

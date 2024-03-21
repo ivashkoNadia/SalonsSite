@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Записи клієнтів</title>
+    <link rel="stylesheet" href="BisnesNote.css">
+</head>
+<body>
+  <div class="header">
+        <div class="purple-bar">
+            <button onclick="window.location.href='MainPage.html'" class="pink-button">Головне меню</button>
+            <button id="myAccountButton" class="pink-button">Мій акаунт</button>
+            <button class="pink-button" onclick="window.location.href='Appointment.html'" >Мої записи</button>
+        </div>
+    </div>
+
+    <div  id = "appointments"></div>
+
+    <script src="mainpage.js"></script>
+    <script>
+      function getAppointments() {
+            if (!sessionStorage.getItem('user')) {
+                alert('Будь ласка, увійдіть в систему.');
+                return;
+            }
+            var user_id = sessionStorage.getItem('user');
+            var data = {
+                user_id: user_id
+            };
+
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "http://127.0.0.1:5000/client_appointments");
+            xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        var response = JSON.parse(xhr.responseText);
+                        var appointments = response.appointments;
+                        // alert(response.message);
+                        displayAppointments(appointments);
+                } 
+                else { alert('Помилка отримання записів'); }
+                }
+            };
+
+            xhr.send(JSON.stringify(data));
+            
+        }
+
+
+        function displayAppointments(appointments){
+    var AppoDiv = document.getElementById('appointments');
+
+    var headings = ['Клієнт', 'Послуга', 'Салон']; 
+    var headingContainer = document.createElement('div');
+    headingContainer.classList.add('name-container');
+
+    headings.forEach(function(headingText) {
+        var heading = document.createElement('div');
+        heading.classList.add('appointment-column');
+        heading.textContent = headingText;
+        headingContainer.appendChild(heading);
+    });
+    AppoDiv.appendChild(headingContainer);
+
+    appointments.forEach(function(appointmentsItem) {
+        var appoContainer = document.createElement('div');
+        appoContainer.classList.add('appointment-container');
+
+        var usernamePhoneContainer = document.createElement('div');
+        usernamePhoneContainer.classList.add('appointments-user-container');
+
+        var usernameElement = document.createElement('div');
+        usernameElement.classList.add('appointments-username');
+        usernameElement.textContent = appointmentsItem.user_name;
+        usernamePhoneContainer.appendChild(usernameElement);
+
+        var userphoneElement = document.createElement('div');
+        userphoneElement.classList.add('appointments-userphone');
+        userphoneElement.textContent = "✆ "+ appointmentsItem.user_phone;
+        usernamePhoneContainer.appendChild(userphoneElement);
+
+        appoContainer.appendChild(usernamePhoneContainer);
+
+        var salonServiceContainer = document.createElement('div');
+        salonServiceContainer.classList.add('appointments-date-service-container');
+
+        var dateElement = document.createElement('div');
+        dateElement.classList.add('appointment-date');
+        dateElement.textContent = appointmentsItem.datetime
+        salonServiceContainer.appendChild(dateElement);
+
+        var serviceElement = document.createElement('div');
+        serviceElement.classList.add('appointments-service');
+        serviceElement.textContent = appointmentsItem.service_name;
+        salonServiceContainer.appendChild(serviceElement);
+
+        appoContainer.appendChild(salonServiceContainer);
+
+        var salonElement = document.createElement('div');
+        salonElement.classList.add('appointments-salon');
+        salonElement.textContent =  appointmentsItem.salon_name;
+        appoContainer.appendChild(salonElement);
+
+
+        //Додаємо контейнер до основного контейнера
+        AppoDiv.appendChild(appoContainer);
+    });
+}
+
+
+
+
+        // function displayAppointments(appointments){
+        //     var AppoDiv = document.getElementById('appointments');
+
+
+        //     var headings = ['Дата', 'Салон', 'Вулиця', 'Послуга', '']; // Empty string for cancel button
+        //     var headingContainer = document.createElement('div');
+        //     headingContainer.classList.add('name-container');
+        //     headings.forEach(function(headingText) {
+        //         var heading = document.createElement('div');
+        //         heading.classList.add('appointment-column');
+        //         heading.textContent = headingText;
+        //         headingContainer.appendChild(heading);
+        //     });
+        //     AppoDiv.appendChild(headingContainer);
+
+
+        //     appointments.forEach(function(appointmentsItem) {
+        //         var appoContainer = document.createElement('div');
+        //         appoContainer.classList.add('appointment-container');
+
+                
+        //         var usernameElement = document.createElement('div');
+        //         usernameElement.classList.add('appointments-username');
+        //         usernameElement.textContent = appointmentsItem.user_name;
+        //         appoContainer.appendChild(usernameElement);
+
+        //         var userphoneElement = document.createElement('div');
+        //         userphoneElement.classList.add('appointments-userphone');
+        //         userphoneElement.textContent = "✆ "+ appointmentsItem.user_phone;
+        //         appoContainer.appendChild(userphoneElement);
+
+        //         var salonElement = document.createElement('div');
+        //         salonElement.classList.add('appointments-salon');
+        //         salonElement.textContent =  appointmentsItem.salon_name;
+        //         appoContainer.appendChild(salonElement);
+
+        //         var serviceElement = document.createElement('div');
+        //         serviceElement.classList.add('appointments-service');
+        //         serviceElement.textContent = appointmentsItem.service_name;
+        //         appoContainer.appendChild(serviceElement);
+
+        //         var dateElement = document.createElement('div');
+        //         dateElement.classList.add('appointment-date');
+        //         dateElement.textContent = appointmentsItem.datetime
+        //         appoContainer.appendChild(dateElement);
+
+        //         //Додаємо контейнер до основного контейнера
+        //         AppoDiv.appendChild(appoContainer);
+        //     });
+        // }
+      
+        getAppointments();
+
+    </script>
+  </body>
+  </html>

@@ -1,13 +1,13 @@
 body {
     margin: 0;
     padding: 0;
-    background: linear-gradient(109.6deg, rgb(197, 173, 219) 11.2%, rgb(245, 226, 226) 91.1%);*/
+    background: linear-gradient(109.6deg, rgb(197, 173, 219) 11.2%, rgb(245, 226, 226) 91.1%);
     display: flex;
     flex-direction: column; /* вирівнювання всіх елементів вертикально */
     justify-content: flex-start; /* вирівнювання по верхньому краю сторінки */
     align-items: center; /* центрування по горизонталі */
-     font-family: Arial, sans-serif;
-     overflow-y: auto; 
+    font-family: Arial, sans-serif;
+    color: #352961;
 }
 
 
@@ -33,6 +33,26 @@ body {
     font-size: 16px;
     margin: 0 10px; /* відступи між кнопками */
 }
+.purple-button{
+     background-color: #352961; /* темно-фіолетовий колір кнопки */
+    color: #f6e5e5; 
+    width: calc(50% - 30px); /* ширина кнопок */
+    padding: 10px 10px; /* відступи всередині кнопок */
+    border: none;
+    border-radius: 5px; /* закруглені кути */
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 15px; 
+    margin-bottom: 10px;
+}
+
+.purple-button:hover {
+    background-color: #774181; /* колір кнопок при наведенні */
+}
+
+.note_salon{
+    display: none;
+}
 
 .pink-button:hover {
     background-color: #f6e5e5; /* колір при наведенні */
@@ -43,47 +63,36 @@ body {
   flex-direction: column;
   align-items: center;
   margin-top: 20px;
+  
 }
 
 .appointment-container {
   display: flex;
-  justify-content: space-between;
-  width: 1000px;
+  width: 100%;
   border: 1px solid #a294ca;
   margin-bottom: 20px;
 }
-.name-container{
-    display: flex;
+
+.name-container {
+  display: flex;
   justify-content: space-between;
-  width: 1000px;
   margin-bottom: 20px;
+  width: 1000px;
   font-size: 26px; /* розмір заголовка */
   color: #352961; /* фіолетовий колір тексту */
 }
 
-.appointment-date {
+.appointments-user-container,
+.appointments-date-service-container,
+.appointments-salon {
+  display: flex;
+  flex-direction: column;
   flex: 1;
   padding: 10px;
 }
 
-.appointments-salon,
-.appointments-street,
-.appointments-service {
+.appointment-column {
   flex: 1;
   padding: 10px;
 }
 
-
-.cancel-button {
-   background-color: #352961;
-    color: #f6e5e5;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    margin: 10px;
-}
-.cancel-button:hover {
-    background-color: #774181; /* колір при наведенні */
-}

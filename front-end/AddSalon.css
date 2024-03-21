@@ -29,7 +29,7 @@ body {
     color: #352961;
     border: none;
     padding: 10px 20px;
-    border-radius: 10px;
+    border-radius: 5px;
     cursor: pointer;
     font-size: 16px;
     margin: 0 10px; /* відступи між кнопками */
@@ -40,7 +40,7 @@ body {
     width: calc(50% - 30px); /* ширина кнопок */
     padding: 10px 10px; /* відступи всередині кнопок */
     border: none;
-    border-radius: 10px; /* закруглені кути */
+    border-radius: 5px; /* закруглені кути */
     cursor: pointer;
     font-size: 16px;
     margin-top: 15px; 
@@ -78,9 +78,9 @@ body {
         }
 
 .add-pricedure{
-    border: 3px solid #352961; 
+    border: 3px solid #774181; 
     margin-top: 20px;
-    border-radius: 10px; /* закруглені кути */
+    border-radius: 0px; /* закруглені кути */
     background: linear-gradient(to right, rgb(255.5, 193, 211.5), rgb(221, 214, 243));
     width: 500px; /* ширина рамки */
     text-align: center; /* вирівнювання тексту по центру */

@@ -28,7 +28,7 @@ body {
     color: #352961;
     border: none;
     padding: 10px 20px;
-    border-radius: 10px;
+    border-radius: 5px;
     cursor: pointer;
     font-size: 16px;
     margin: 0 10px; /* відступи між кнопками */
@@ -123,7 +123,7 @@ th, td {
     margin-top: 100px;
     padding-left: 40px;
     padding-right: 40px;
-    border-radius: 10px;
+    border-radius: 0px;
     align-items: center;
     margin-left: 100px;
 }
@@ -141,7 +141,7 @@ th, td {
     color: #f6e5e5; 
     padding: 10px 15px; /* відступи всередині кнопок */
     border: none;
-    border-radius: 10px; /* закруглені кути */
+    border-radius: 5px; /* закруглені кути */
     cursor: pointer;
     font-size: 16px;
     display: block;

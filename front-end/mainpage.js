@@ -18,6 +18,26 @@ function AddSalonButton(){
         }
 }
 
+function SalonNoteButton(){
+    var userData = JSON.parse(sessionStorage.getItem('user'));
+        if (userData) {
+            if (userData.type_user == 1){
+                var addButton = document.createElement('button');
+                addButton.textContent = 'Записи клієнтів';
+                addButton.className = 'pink-button note_salon';
+                addButton.onclick = function() {
+                     window.location.href = 'BisnesNote.html';
+                };
+
+                // Отримання елементу з класом "purple-bar"
+                var purpleBar = document.querySelector('.purple-bar');
+    
+                // Додавання кнопки до "purple-bar"
+                purpleBar.appendChild(addButton);
+            }
+        }
+}
+
 function handleMyAccountClick() {
     // Перевіряємо, чи у користувача є дані у sessionStorage
     if (sessionStorage.getItem('user')) {
@@ -135,4 +155,5 @@ function loginUser() {
 
 window.onload = function() {
     AddSalonButton();
+    SalonNoteButton()
 };

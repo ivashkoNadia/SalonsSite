@@ -47,7 +47,9 @@
             document.getElementById('username').textContent = userData.name;
             document.getElementById('useremail').textContent = userData.email;
             document.getElementById('userphone').textContent = userData.phone;
-            document.getElementById('usertype').textContent = userData.type_user === 1 ? 'Бізнес' : 'Простий';
+
+            document.getElementById('usertype').textContent = userData.type_user == 1 ? 'Бізнес' : userData.type_user == 3 ? 'Адміністратор' : 'Простий';
+
         }
 
         // Функція для відображення форми редагування даних
