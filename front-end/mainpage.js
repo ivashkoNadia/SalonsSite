@@ -38,6 +38,26 @@ function SalonNoteButton(){
         }
 }
 
+function ForAdminButton(){
+    var userData = JSON.parse(sessionStorage.getItem('user'));
+        if (userData) {
+            if (userData.type_user == 3){
+                var addButton = document.createElement('button');
+                addButton.textContent = 'На затвердження';
+                addButton.className = 'pink-button approve_salon';
+                addButton.onclick = function() {
+                     window.location.href = 'AdminApprove.html';
+                };
+
+                // Отримання елементу з класом "purple-bar"
+                var purpleBar = document.querySelector('.purple-bar');
+    
+                // Додавання кнопки до "purple-bar"
+                purpleBar.appendChild(addButton);
+            }
+        }
+}
+
 function handleMyAccountClick() {
     // Перевіряємо, чи у користувача є дані у sessionStorage
     if (sessionStorage.getItem('user')) {
@@ -155,5 +175,6 @@ function loginUser() {
 
 window.onload = function() {
     AddSalonButton();
-    SalonNoteButton()
+    SalonNoteButton();
+    ForAdminButton();
 };

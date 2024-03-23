@@ -301,6 +301,18 @@ def get_user_appointments():
 def upload_photo():
     return salon.fun_photo(request, db)
 
+@app.route('/salon_approve', methods=['GET'])
+def get_unapproved_salons():
+    return salon.fun_approve_salon()
+
+@app.route('/approve_salon/<int:salon_id>', methods=['POST'])
+def approve_salon(salon_id):
+    return salon.fun_really_approve(salon_id, db)
+
+@app.route('/delete_salon/<int:salon_id>', methods=['DELETE'])
+def delete_salon(salon_id):
+    return salon.fun_delete_salon(salon_id, db)
+
 if __name__ == '__main__':
     app.run(debug=True)
 

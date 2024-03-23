@@ -2,6 +2,8 @@ from Entity.User import Appointment, Salon, Service
 from flask import Flask, request, jsonify
 import json
 import io
+import base64
+
 
 from PIL import Image
 def fun_photo(request_, db):
@@ -71,4 +73,52 @@ def fun_photo(request_, db):
     else:
         return jsonify({'message':'Помилка: Фото не було завантажено'})
 
+def fun_approve_salon():
+    salons = Salon.query.filter_by(approve=0).all()
 
+    salon_data = []
+    for salon in salons:
+        # Отримуємо список процедур для кожного салону
+        services = Service.query.filter_by(salon_id=salon.id).all()
+        # Створюємо словник для кожного салону
+        salon_dict = {
+            'id': salon.id,
+            'district': salon.district,
+            'street': salon.street,
+            'name': salon.name,
+            'owner_id': salon.owner_id,
+            'social': salon.social,
+            'photo': base64.b64encode(salon.photo).decode('utf-8') if salon.photo else None,
+            'services': [{'name': service.name, 'price': service.price} for service in services]
+        }
+        # Додаємо словник салону до списку
+        salon_data.append(salon_dict)
+
+    # Повертаємо список салонів з їхніми процедурами у форматі JSON
+    return jsonify({'salons': salon_data})
+
+def fun_really_approve(salon_id, db):
+    try:
+        salon = Salon.query.get(salon_id)
+
+        if salon:
+            salon.approve = 1
+            db.session.commit()
+            return jsonify({'message': 'Салон успішно затверджено'})
+        else:
+            return jsonify({'message': 'Салон з вказаним id не знайдено'})
+    except Exception as e:
+        return jsonify({'message': str(e)})
+
+def fun_delete_salon(salon_id, db):
+    try:
+        salon = Salon.query.get(salon_id)
+
+        if salon:
+            db.session.delete(salon)
+            db.session.commit()
+            return jsonify({'message': 'Салон успішно видалено'})
+        else:
+            return jsonify({'message': 'Салон з вказаним id не знайдено'})
+    except Exception as e:
+        return jsonify({'message': str(e)})

@@ -1,0 +1,118 @@
+body {
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(109.6deg, rgb(197, 173, 219) 11.2%, rgb(245, 226, 226) 91.1%);
+    display: flex;
+    flex-direction: column; /* вирівнювання всіх елементів вертикально */
+    justify-content: flex-start; /* вирівнювання по верхньому краю сторінки */
+    align-items: center; /* центрування по горизонталі */
+     font-family: Arial, sans-serif;
+     overflow-y: auto; 
+      color: #352961;
+}
+
+
+.header {
+    background-color: transparent;
+    width: 100%;
+}
+
+.purple-bar {
+    background-color: #352961; /* фіолетовий прямокутник */
+    display: flex;
+    justify-content: center; /* центрування кнопок по горизонталі */
+    padding: 10px 0;
+}
+
+.pink-button {
+    background-color: rgb(255.5, 193, 211.5); 
+    color: #352961;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin: 0 10px; /* відступи між кнопками */
+}
+
+.approve_salon{
+    display: none;
+}
+
+
+
+
+
+
+.photo-place {
+    width: 200px;
+    padding: 5px;
+}
+
+.photo-place img {
+    width: 100%;
+    height: 100%;  
+    object-fit: cover; 
+    border-radius: 0px; 
+}
+
+ #salonList {
+            display: flex;
+           /* flex-wrap: wrap;
+            justify-content: space-around;*/
+            margin-top: 20px;
+            flex-direction: column;
+            width: 70%;
+        }
+
+        .own-container {
+            display: flex;
+            justify-content: space-between;
+
+            width: 100%;
+            height: 210px;
+            margin: 10px;
+            padding: 10px;
+            border: 3px solid #352961;
+            background: linear-gradient(to right, rgb(240.5, 193, 211.5), rgb(221, 214, 243));
+            border-radius: 0px;
+
+            font-size: 20px; 
+            color: #352961; 
+        }
+
+        .info1-container{
+            flex:  2;
+            margin-left: 10px;
+        }
+
+        .info2-container{
+            flex:  3;
+        }
+
+        /*.button-container{
+            flex: 4;
+        }*/
+
+
+.approve-button{
+    display: block;
+    background-color: #352961; /* темно-фіолетовий колір кнопки */
+    color: #f6e5e5; 
+    padding: 10px; /*відступ від тексту до країв кнопки*/
+    border: none;
+    border-radius: 5px; /* закруглені кути */
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 25px; 
+    margin-bottom: 10px;
+}
+
+.approve-button:hover {
+    background-color: #774181; /* колір кнопок при наведенні */
+}
+
+select {
+    width: 180px; /* Встановлюємо ширину випадаючого списку */
+    border: 2px solid purple;
+}

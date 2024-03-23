@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Затвердження салонів</title>
+    <link rel="stylesheet" href="AdminApprove.css">
+</head>
+<body>
+  <div class="header">
+        <div class="purple-bar">
+            <button onclick="window.location.href='MainPage.html'" class="pink-button">Головне меню</button>
+            <button id="myAccountButton" class="pink-button">Мій акаунт</button>
+            <button class="pink-button" onclick="window.location.href='Appointment.html'" >Мої записи</button>
+        </div>
+    </div>
+    <div id="salonList"></div>
+     <script src="mainpage.js"></script>
+    <script>
+       function getApproveSalon() {
+            
+
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "http://127.0.0.1:5000/salon_approve");
+            xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        var response = JSON.parse(xhr.responseText);
+                        var approve_salon = response.salons;
+                        if (approve_salon) {
+                          displayForApprove(approve_salon);
+                        } else {
+                          alert('Отримано некоректні дані про салони');
+                    }}
+                else { alert('Помилка отримання записів'); }
+                }
+            };
+
+            xhr.send(); 
+        }
+
+        function displayForApprove(salons) {
+        var salonListDiv = document.getElementById('salonList');
+
+        salons.forEach(function (salon) {
+            var ownContainer = document.createElement('div');
+            ownContainer.classList.add('own-container');
+
+            var photoPlace = document.createElement("div");
+                    photoPlace.classList.add("photo-place");
+                    ownContainer.appendChild(photoPlace);
+
+                    // Додавання фото, якщо воно є
+                    if (salon.photo) {
+                        var img = document.createElement('img');
+                        img.src = "data:image/jpeg;base64," + salon.photo;
+                        img.style.width = "100%"; // Зробити фото квадратним
+                        img.style.height = "100%"; // Зробити фото квадратним
+                        photoPlace.appendChild(img);
+                    }
+
+            // Додаємо інформацію про салон
+            var infoContainer = document.createElement('div');
+            infoContainer.classList.add('info1-container');
+            var nameInfo = document.createElement('p');
+            var districtInfo = document.createElement('p');
+            var streetInfo = document.createElement('p');
+            nameInfo.textContent = 'Назва: ' + salon.name;
+            districtInfo.textContent = 'Район: ' + salon.district;
+            streetInfo.textContent = 'Вулиця: ' + salon.street;
+            infoContainer.appendChild(nameInfo);
+            infoContainer.appendChild(districtInfo);
+            infoContainer.appendChild(streetInfo);
+            ownContainer.appendChild(infoContainer);
+
+            // Додаємо інформацію про салон
+            var infoContainer2 = document.createElement('div');
+            infoContainer2.classList.add('info2-container');
+            var socialInfo = document.createElement('p');
+            var ownerInfo = document.createElement('p');
+            socialInfo.textContent = 'Соціальні мережі: ' + salon.social;
+            ownerInfo.textContent ='id-власника: ' + salon.owner_id;
+            infoContainer2.appendChild(socialInfo);
+            infoContainer2.appendChild(ownerInfo);
+            ownContainer.appendChild(infoContainer2);
+
+
+
+            var buttonContainer = document.createElement('div');
+            buttonContainer.classList.add('button-container');
+            var approveButton = document.createElement('button');
+            approveButton.textContent = 'Затвердити';
+            approveButton.classList.add('approve-button');
+
+            var disapproveButton = document.createElement('button');
+            disapproveButton.textContent = 'Відхилити';
+            disapproveButton.classList.add('approve-button');
+
+
+            approveButton.addEventListener('click', function() { addSalon(salon.id); });
+
+            disapproveButton.addEventListener('click', function() { deleteSalon(salon.id); });
+
+
+            var selectList = document.createElement('select'); // Створення випадаючого списку
+
+            // Додавання опцій до випадаючого списку
+            salon.services.forEach(function(service) {
+            var option = document.createElement('option');
+            option.value = service.name;
+            option.textContent = service.name + ' - ' + service.price;
+            selectList.appendChild(option);
+            });
+
+            buttonContainer.appendChild(approveButton);
+            buttonContainer.appendChild(disapproveButton);
+            buttonContainer.appendChild(selectList); // Додавання випадаючого списку до контейнера
+
+            ownContainer.appendChild(buttonContainer);
+
+            // Додаємо контейнер салону до загального списку
+            salonListDiv.appendChild(ownContainer);
+        });
+    }
+
+
+    function addSalon(id){
+      var xhr = new XMLHttpRequest();
+            xhr.open("POST", "http://127.0.0.1:5000/approve_salon/" + id);
+            xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        var response = JSON.parse(xhr.responseText);
+                        var message = response.message;
+                        alert(message);
+                        window.open('AdminApprove.html', '_self'); // Відкрити сторінку у тому ж вікні
+                    } else {  alert('Помилка видалення'); }
+                }
+            };
+
+            xhr.send();
+
+    }
+
+    function deleteSalon(id){
+      var xhr = new XMLHttpRequest();
+            xhr.open("DELETE", "http://127.0.0.1:5000/delete_salon/" + id);
+            xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        var response = JSON.parse(xhr.responseText);
+                        var message = response.message;
+                        alert(message);
+                        window.open('AdminApprove.html', '_self'); // Відкрити сторінку у тому ж вікні
+                    } else {  alert('Помилка видалення'); }
+                }
+            };
+
+            xhr.send();
+    }
+
+getApproveSalon();
+
+    </script>
+  </body>
+  </html>
