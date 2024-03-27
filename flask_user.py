@@ -136,7 +136,7 @@ def edit_user_password():
 def get_salons_availavle():
     salons = Salon.query.filter_by(approve=1).all()
 
-    salon_data = [{'id': salon.id, 'district': salon.district, 'name': salon.name, 'rating': salon.rating,
+    salon_data = [{'id': salon.id, 'district': salon.district, 'name': salon.name, 'rating': salon.rating, 'owner_id':salon.owner_id,
                    'photo': base64.b64encode(salon.photo).decode('utf-8') if salon.photo else None} for salon in salons]
 
     return jsonify({'salons': salon_data})

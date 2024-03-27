@@ -11,64 +11,72 @@ function getAvailableSalons() {
           var salonListContainer = document.getElementById("salonList");
 
           salons.forEach(function(salon) {
-            var salonContainer = document.createElement("div");
-            salonContainer.classList.add("salon-container");
+    var salonContainer = document.createElement("div");
+    salonContainer.classList.add("salon-container");
 
-            var photoPlace = document.createElement("div");
-                    photoPlace.classList.add("photo-place");
-                    salonContainer.appendChild(photoPlace);
+    var photoPlace = document.createElement("div");
+    photoPlace.classList.add("photo-place");
+    salonContainer.appendChild(photoPlace);
 
-                    // Додавання фото, якщо воно є
-                    if (salon.photo) {
-                        var img = document.createElement('img');
-                        img.src = "data:image/jpeg;base64," + salon.photo;
-                        img.style.width = "100%"; // Зробити фото квадратним
-                        img.style.height = "100%"; // Зробити фото квадратним
-                        photoPlace.appendChild(img);
-                    }
+    // Додавання фото, якщо воно є
+    if (salon.photo) {
+        var img = document.createElement('img');
+        img.src = "data:image/jpeg;base64," + salon.photo;
+        img.style.width = "100%"; // Зробити фото квадратним
+        img.style.height = "100%"; // Зробити фото квадратним
+        photoPlace.appendChild(img);
+    }
 
+    var salonContainer1 = document.createElement('div'); // Замінено змінну з "salonContainer" на "salonContainer1"
+    salonContainer1.classList.add('salon1-container');
+    var nameInfo = document.createElement('p');
+    var districtInfo = document.createElement('p');
+    nameInfo.textContent = 'Назва: ' + salon.name;
+    nameInfo.classList.add("name-salon");
+    districtInfo.textContent = 'Район: ' + salon.district;
+    salonContainer1.appendChild(nameInfo);
+    salonContainer1.appendChild(districtInfo);
+    salonContainer.appendChild(salonContainer1); // Додано до контейнера салону
 
-            var salonName = document.createElement("p");
-            salonName.classList.add("name-salon");
-            salonName.textContent = salon.name;
-            salonContainer.appendChild(salonName);
-
-            var salonImageContainer = document.createElement("div");
-            salonImageContainer.classList.add("salon-image-container"); // Додайте клас для стилізації за допомогою CSS
-            salonContainer.appendChild(salonImageContainer);
-
-            var salonImage = document.createElement("img");
-            salonImage.src = "photos/clipart-map-location.png"; // Шлях до фото відносно кореня сайту
-            salonImage.classList.add("salon-image"); // Додайте клас для стилізації за допомогою CSS
-            salonImageContainer.appendChild(salonImage);
-
-
-            var salonDistrict = document.createElement("p");
-            salonDistrict.classList.add("location-salon");
-            salonDistrict.textContent = salon.district;
-            salonContainer.appendChild(salonDistrict);
-
-            var salonRating = document.createElement("p");
-            salonRating.classList.add("rating-salon");
-            salonRating.textContent = salon.rating;
-            salonContainer.appendChild(salonRating);
-
-            var salonDetailsButton = document.createElement("button");
-            salonDetailsButton.classList.add("button-details");
-            salonDetailsButton.textContent = "Деталі";
-            
-            salonDetailsButton.addEventListener("click", function() {
-                var salonId = salon.id;
-                sessionStorage.setItem('salon', salonId);
-                    window.location.href = "ChooseSalon.html";
-            });
-            salonDetailsButton.setAttribute("data-salon-id", "{{ salon.id }}"); // Додайте атрибут data-salon-id зі значенням ID салону
-            salonContainer.appendChild(salonDetailsButton);
+    var salonContainer2 = document.createElement('div');
+    salonContainer2.classList.add('salon2-container');
+    var ratingInfo = document.createElement('p');
+    ratingInfo.textContent = 'Рейтинг: ' + salon.rating+"☆"; // Виправлено присвоєння тексту рейтингу
+    salonContainer2.appendChild(ratingInfo);
+    salonContainer.appendChild(salonContainer2); // Додано до контейнера салону
 
 
 
-            salonListContainer.appendChild(salonContainer);
-          });
+
+    var buttonContainer = document.createElement('div');
+    buttonContainer.classList.add("button_container");
+    var salonDetailsButton = document.createElement('button');
+    salonDetailsButton.classList.add('button-details');
+    salonDetailsButton.textContent = 'Деталі';
+
+    salonDetailsButton.addEventListener("click", function() {
+        var salonId = salon.id;
+        sessionStorage.setItem('salon', salonId);
+        window.location.href = "ChooseSalon.html";
+    });
+
+    salonDetailsButton.setAttribute("data-salon-id", "{{ salon.id }}"); // Додайте атрибут data-salon-id зі значенням ID салону
+    buttonContainer.appendChild(salonDetailsButton);
+
+
+    var userId = JSON.parse(sessionStorage.getItem('user'));
+    if (salon.owner_id == userId.user_id) {
+        var editButton = createEditButton(salon.id);
+        var deleteButton = createDeleteButton();
+        buttonContainer.appendChild(editButton);
+         buttonContainer.appendChild(deleteButton);
+    }
+    
+
+
+    salonContainer.appendChild(buttonContainer);
+    salonListContainer.appendChild(salonContainer);
+});
         } else {
           console.error("Error:", xhr.status);
         }
@@ -78,5 +86,34 @@ function getAvailableSalons() {
     xhr.send();
   }
 
-  // Викликати функцію для отримання доступних салонів
+
+  function createEditButton(id) {
+    var editButton = document.createElement('button');
+    editButton.classList.add('button-details');
+    editButton.textContent = 'Редагувати';
+
+    editButton.addEventListener("click", function() {
+        var salonId = id;
+        sessionStorage.setItem('salon', salonId);
+        window.location.href = "EditSalon.html";
+    });
+
+    return editButton;
+}
+
+function createDeleteButton() {
+    var deleteButton = document.createElement('button');
+    deleteButton.classList.add('button-details');
+    deleteButton.textContent = 'Видалити';
+
+    deleteButton.addEventListener("click", function() {
+        // Додаткова логіка для редагування
+    });
+
+    return deleteButton;
+}
+
+// Викликати функцію для отримання доступних салонів
   getAvailableSalons();
+
+
