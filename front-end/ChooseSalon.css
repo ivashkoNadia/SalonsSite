@@ -214,8 +214,8 @@ th, td {
     border: 1px solid #a294ca; /* Фіолетова рамка */
     margin: 20px auto; /* Відступи від країв сторінки */
     padding: 10px; /* Відступ всередині контейнера */
-    width: calc(100% - 60px); 
-    max-width: 1000px;
+    /*width: calc(100% - 60px); */
+    width: 900px;
 }
 
 .feedback-date {

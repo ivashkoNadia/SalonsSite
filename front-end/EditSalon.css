@@ -43,3 +43,78 @@ body {
 .pink-button:hover {
     background-color: #f6e5e5; /* колір при наведенні */
 }
+
+
+
+.purple-button{
+     background-color: #352961; /* темно-фіолетовий колір кнопки */
+    color: #f6e5e5; 
+    width: 200px; /* ширина кнопок */
+    padding: 10px 10px; /* відступи всередині кнопок */
+    border: none;
+    border-radius: 5px; /* закруглені кути */
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 15px; 
+    margin-bottom: 10px;
+}
+
+.purple-button:hover {
+    background-color: #774181; /* колір кнопок при наведенні */
+}
+
+
+  #procedureForm {
+            height: 600px;
+            overflow-y: auto; /* Дозволяє прокручувати, якщо вміст перевищує висоту */
+            padding: 10px;
+        }
+
+        #procedures input, #procedures button {
+            display: inline-block; /* Розташовуємо комірки одну поруч з одною */
+            vertical-align: top; /* Вирівнюємо по верхньому краю */
+            margin-bottom: 10px; /* Відступ між комірками */
+             height: 25px; 
+        }
+
+        .removeButton {
+            margin-left: 10px;
+           /* Відступ кнопки від інших елементів */
+        }
+
+.add-pricedure{
+    margin-top: 10px;
+    text-align: center; 
+}
+
+input {
+    padding: 10px; /* відступи від тексту до рамки */
+    margin-bottom: 10px; /* відступи між полями вводу */
+    border: none;
+    border-radius: 4px; /* закруглені кути */
+}
+
+.width-procedure{
+    margin-right: 5px;
+    margin-left: -5px;
+}
+
+
+.removeButton2{
+    margin-left: 15px;
+}
+
+/* Для WebKit браузерів (Chrome, Safari, Opera) */
+::-webkit-scrollbar {
+    width: 10px; /* ширина полоси прокрутки */
+}
+
+/* Трек */
+::-webkit-scrollbar-track {
+    background: #f1f1f1; /* колір фону треку */
+}
+
+/* Блок прокрутки */
+::-webkit-scrollbar-thumb {
+    background: #774181; /* колір блоку прокрутки */
+}

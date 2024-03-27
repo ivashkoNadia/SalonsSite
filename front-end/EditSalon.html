@@ -10,15 +10,158 @@
     <div class="container">
         <div class="header">
             <div class="purple-bar">
+                <button onclick="window.location.href='MainPage.html'" class="pink-button">Головне меню</button>
                 <button id="myAccountButton" class="pink-button">Мій акаунт</button>
                 <button class="pink-button" onclick="window.location.href='Appointment.html'">Мої записи</button>
             </div>
         </div>
-        <div id="salonList"></div>
+        <div id="salonList">
+            
+            <div class="add-pricedure">
+     <h1>Додати доступні послуги</h1>
+    <form id="procedureForm">
+        <div id="procedures">
+    
+        </div>
+        <button type="button" class="purple-button" onclick="addProcedureField()">Додати процедуру</button>
+        <button type="button" class="purple-button" onclick="saveProcedure()">Зберегти зміни</button>
+    </form>
+  </div>
+
+        </div>
     </div>
     <script src="mainpage.js"></script>
     <script>
-        
+        function getProcedures(){
+    var salonId = sessionStorage.getItem('salon');
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", "http://127.0.0.1:5000/services/" + salonId);
+    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                var response = JSON.parse(xhr.responseText);
+                var services = response.services;
+                
+                // Отримання елементу div для додавання полів з процедурами
+                var proceduresDiv = document.getElementById('procedures');
+                
+                // Для кожної послуги створюємо поля вводу та додаємо їх до форми
+                services.forEach(function(service) {
+                    var div = document.createElement('div');
+                    var input1 = document.createElement('input');
+                    input1.classList.add("width-procedure");
+                    input1.type = 'text';
+                    input1.name = 'procedure[]';
+                    input1.placeholder = 'Введіть назву процедури';
+                    input1.autocomplete = 'off';
+                    input1.value = service.name; // Встановлення значення назви процедури
+                    var input2 = document.createElement('input');
+                    input2.type = 'text';
+                    input2.name = 'price[]';
+                    input2.placeholder = 'Ціна';
+                    input2.autocomplete = 'off';
+                    input2.value = service.price; // Встановлення значення ціни
+
+                     input1.dataset.id = service.id;
+                     input2.dataset.id = service.id;
+
+                    var removeButton = document.createElement('button');
+                    removeButton.type = 'button';
+                    removeButton.classList.add('removeButton2');
+                    removeButton.textContent = '✖';
+                    removeButton.onclick = function() {
+                        removeProcedureField(this);
+                    };
+                    div.appendChild(input1);
+                    div.appendChild(input2);
+                    div.appendChild(removeButton);
+                    proceduresDiv.appendChild(div);
+                });
+            } else {  
+                alert('Помилка');
+            }
+        }
+    };
+
+    xhr.send();
+}
+
+        function addProcedureField() {
+            var proceduresDiv = document.getElementById('procedures');
+            var div = document.createElement('div');
+            var input1 = document.createElement('input');
+            input1.classList.add("width-procedure");
+            input1.type = 'text';
+            input1.name = 'procedure[]';
+            input1.autocomplete = 'off';
+            input1.placeholder = 'Введіть назву процедури';
+            var input2 = document.createElement('input');
+            input2.type = 'text';
+            input2.name = 'price[]';
+            input2.placeholder = 'Ціна';
+            input2.autocomplete = 'off';
+            var removeButton = document.createElement('button');
+            removeButton.type = 'button';
+            removeButton.classList.add('removeButton2');
+            removeButton.textContent = '✖';
+            removeButton.onclick = function() {
+                removeProcedureField(this);
+            };
+            div.appendChild(input1);
+            div.appendChild(input2);
+            div.appendChild(removeButton);
+            proceduresDiv.appendChild(div);
+        }
+
+        function removeProcedureField(button) {
+            button.parentNode.remove();
+        }
+
+        function saveProcedure(){
+            var formData = new FormData();
+            var salonId = sessionStorage.getItem('salon');
+
+            var procedures = document.getElementsByName('procedure[]');
+            var prices = document.getElementsByName('price[]');
+
+            for (var i = 0; i < prices.length; i++) {
+              var price = parseFloat(prices[i].value);
+              if (isNaN(price) || price < 0) {
+                alert('Ціна має бути числом та не може бути від\'ємною.');
+                return; // Повертаємо функцію, якщо ціна некоректна
+              }
+            }
+
+            // Додавання даних про процедури та ціни до formData
+            for (var i = 0; i < procedures.length; i++) {
+            formData.append('procedures[]', procedures[i].value);
+            formData.append('prices[]', prices[i].value);
+            formData.append('id[]', prices[i].dataset.id);
+            }
+
+            for (var value of formData.values()) {
+              if (!value) {
+              alert('Будь ласка, заповніть всі поля.');
+              return; // Повертаємо функцію, якщо хоча б одне поле не має значення
+              }
+            }
+
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', 'http://127.0.0.1:5000/edit_services/' + salonId);
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                     var response = JSON.parse(xhr.responseText);
+                    alert(response.message);
+                } else {
+                  alert('Помилка при збереженні.');
+                }
+            };
+            xhr.send(formData);
+        }
+
+        getProcedures();
 
     </script>
 </body>

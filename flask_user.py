@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 import salon
+import other
 import feedback
 import appointment
 from Entity.User import User, Salon, Service, Appointment, Feedback, db
@@ -312,6 +313,14 @@ def approve_salon(salon_id):
 @app.route('/delete_salon/<int:salon_id>', methods=['DELETE'])
 def delete_salon(salon_id):
     return salon.fun_delete_salon(salon_id, db)
+
+@app.route("/services/<int:salon_id>", methods=["GET"])
+def get_services_by_salon_id(salon_id):
+    return other.fun_getservices(salon_id)
+
+@app.route("/edit_services/<int:salon_id>", methods=["POST"])
+def update_services(salon_id):
+    return other.fun_editservices(salon_id, db, request)
 
 if __name__ == '__main__':
     app.run(debug=True)
