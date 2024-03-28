@@ -47,8 +47,10 @@
 
         <button class = "reserv-button" type="button" onclick="register()">Записатися</button>
     </form>
-    <div class="feedback-title">Відгуки</div>
-    <div class="feedback-div">
+
+<div class="cont1_cont2">
+    <div class="cont1">
+        <div class="feedback-div">
         <textarea class="feedback-input" id ="text_feedback" placeholder="Напишіть свій відгук тут..."></textarea>
         <div>
         <div class="rating">
@@ -60,11 +62,15 @@
         </div>
         <button id="submitBtn" class="reserv-button">Відправити</button>
         </div>
+
+        </div>
     </div>
 
-    <div class="feedback-text", id="feedback-text">
-         
+    <div class="cont2">
+    <div class="feedback-title">Відгуки</div>
+    <div class="feedback-text" id="feedback-text"></div>
     </div>
+</div>
 
 
     <script src="mainpage.js"></script>
@@ -148,7 +154,7 @@
             // Додавання опцій з отриманими даними
             data.services.forEach(service => {
                 var option = document.createElement('option');
-                option.value = service.id;
+                option.value = service.name;//here was id
                 option.textContent = service.name;
                 procedureSelect.appendChild(option);
             });
@@ -217,7 +223,7 @@
     var data = {
         user_id: userId,
         salon_id: salonId,
-        service_id: procedure,
+        service_name: procedure,
         datetime: date + " " + time
     };
 
@@ -277,6 +283,7 @@ function addFeedback() {
                 var response = JSON.parse(xhr.responseText);
                 if (response.message) {
                     alert(response.message);
+                    window.location.href = "ChooseSalon.html";
                 }
                  else {
                     alert(response.error);

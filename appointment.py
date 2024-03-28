@@ -18,22 +18,16 @@ def fun_user_appointments(data):
         Appointment.user_id == int(user_id),
         Appointment.datetime >= current_datetime
     ).all()
-    for appointment in appointments:
-        print("Дата та час: ", appointment.datetime)
-        print("Салон: ", appointment.salon_id)
-        print("Послуга: ", appointment.service_id)
-        print("\n")
-
 
     # Серіалізуємо дані у вказаний формат
     serialized_appointments = []
     for appointment in appointments:
         salon = Salon.query.filter_by(id=int(appointment.salon_id)).first()
-        service = Service.query.filter_by(id=int(appointment.service_id)).first()
+        # service = Service.query.filter_by(id=int(appointment.service_id)).first()
         serialized_appointments.append({
             'salon_name': salon.name,
             'salon_street':salon.street,
-            'service_name': service.name,
+            'service_name': appointment.service_name,
             'appointment_id':appointment.id,
             'datetime': appointment.datetime.strftime('%Y-%m-%d %H:%M')  # Перетворення в формат рядка
         })
@@ -81,25 +75,17 @@ def fun_client_appointments(data):
 
         # Формуємо список словників з даних про записи користувача
         appointments_data = []
-        print(len(user_appointments))
         for appointment in user_appointments:
-            print("1")
             user = User.query.get(appointment.user_id)
-            print("2", user)
             salon = Salon.query.get(appointment.salon_id)
-            print("3", appointment.service_id)
-            service = Service.query.get(appointment.service_id)
-            print("4", service)
             appointments_data.append({
                 'user_name': user.name,
                 'user_phone': user.phone,
                 'salon_name': salon.name,
-                'service_name': service.name,
+                'service_name': appointment.service_name,
                 'datetime': appointment.datetime.strftime('%Y-%m-%d %H:%M')
             })
-            print("5")
 
-        print(len(appointments_data), "huh")
         return jsonify({'appointments': appointments_data})
 
     except Exception as e:

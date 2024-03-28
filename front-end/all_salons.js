@@ -64,13 +64,11 @@ function getAvailableSalons() {
     buttonContainer.appendChild(salonDetailsButton);
 
 
-    // var userId = JSON.parse(sessionStorage.getItem('user'));
-    // if (salon.owner_id == userId.user_id) {
-    //     var editButton = createEditButton(salon.id);
-    //     var deleteButton = createDeleteButton();
-    //     buttonContainer.appendChild(editButton);
-    //      buttonContainer.appendChild(deleteButton);
-    // }
+    var userId = JSON.parse(sessionStorage.getItem('user'));
+    if (salon.owner_id == userId.user_id) {
+        var editButton = createEditButton(salon.id);
+        buttonContainer.appendChild(editButton);
+    }
     
 
 
@@ -87,19 +85,19 @@ function getAvailableSalons() {
   }
 
 
-//   function createEditButton(id) {
-//     var editButton = document.createElement('button');
-//     editButton.classList.add('button-details');
-//     editButton.textContent = 'Редагувати';
+  function createEditButton(id) {
+    var editButton = document.createElement('button');
+    editButton.classList.add('button-details');
+    editButton.textContent = 'Редагувати';
 
-//     editButton.addEventListener("click", function() {
-//         var salonId = id;
-//         sessionStorage.setItem('salon', salonId);
-//         window.location.href = "EditSalon.html";
-//     });
+    editButton.addEventListener("click", function() {
+        var salonId = id;
+        sessionStorage.setItem('salon', salonId);
+        window.location.href = "EditSalon.html";
+    });
 
-//     return editButton;
-// }
+    return editButton;
+}
 
 // function createDeleteButton() {
 //     var deleteButton = document.createElement('button');

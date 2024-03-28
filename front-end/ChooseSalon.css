@@ -159,32 +159,17 @@ th, td {
 .feedback-title{
     font-size: 26px; /* розмір заголовка */
     color: #352961; /* фіолетовий колір тексту */
-   text-align: left;
-   margin-top: 60px;
+   text-align: center;
+   margin-top: 80px;
    margin-bottom: 10px;
 }
 
-/*.rating {
-  font-size: 30px;
-  
-
-}
-
-.star {
-  cursor: pointer;
-  color: #f6e5e5;
-}*/
 
 
 .feedback-div {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 200px;
-   
-    
-    padding: 20px;
-    box-sizing: border-box;
+    width: 350px;
+   margin-top: 120px;
+   margin-left: 100px;
 }
 
 
@@ -193,7 +178,7 @@ th, td {
     height: 100px;
     resize: none;
     background-color: rgba(255, 255, 255, 0.7);
-    }
+}
 
 
 .rating {
@@ -201,7 +186,7 @@ th, td {
   display: flex;
   font-size: 30px;
   margin-bottom: 10px;
-
+  margin-left: 113px;
 }
 
 .star {
@@ -214,7 +199,6 @@ th, td {
     border: 1px solid #a294ca; /* Фіолетова рамка */
     margin: 20px auto; /* Відступи від країв сторінки */
     padding: 10px; /* Відступ всередині контейнера */
-    /*width: calc(100% - 60px); */
     width: 900px;
 }
 
@@ -231,5 +215,18 @@ th, td {
     margin-top: 10px; /* Відступ зверху */
 }
 
+.cont1_cont2 {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+}
+
+.cont1 {
+    flex: 0 0 30%; /* Займає 30% ширини батьківського контейнера */
+}
+
+.cont2 {
+    flex: 0 0 70%; /* Займає 70% ширини батьківського контейнера */
+}
 
 

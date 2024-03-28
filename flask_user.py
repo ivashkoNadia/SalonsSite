@@ -207,11 +207,11 @@ def add_appointment():
     data = request.get_json()
     user_id = data.get('user_id')
     salon_id = data.get('salon_id')
-    service_id = data.get('service_id')
+    service_name = data.get('service_name')
     appointment_datetime = data.get('datetime')
 
     # Перевірка, чи не існує вже запису на цей день та час для цього користувача та процедури
-    existing_appointment = Appointment.query.filter_by(salon_id=salon_id, service_id=service_id,
+    existing_appointment = Appointment.query.filter_by(salon_id=salon_id, service_name=service_name,
                                                        datetime=appointment_datetime).first()
     if existing_appointment:
         available_hours = []
@@ -219,7 +219,7 @@ def add_appointment():
             new_datetime = datetime.strptime(appointment_datetime, '%Y-%m-%d %H:%M').replace(hour=hour,
                                                                                              minute=0)  # Встановлюємо годину та хвилину
             new_datetime_str = new_datetime.strftime('%Y-%m-%d %H:%M')
-            existing_appointment = Appointment.query.filter_by(salon_id=salon_id, service_id=service_id,
+            existing_appointment = Appointment.query.filter_by(salon_id=salon_id, service_name=service_name,
                                                                datetime=new_datetime).first()
             if not existing_appointment:
                 split_string = new_datetime_str.split(' ')
@@ -239,7 +239,7 @@ def add_appointment():
     user_id = user_id_dict['user_id']
 
     # Створення нового запису
-    new_appointment = Appointment(user_id=user_id, salon_id=salon_id, service_id=service_id, datetime=appointment_datetime)
+    new_appointment = Appointment(user_id=user_id, salon_id=salon_id, service_name=service_name, datetime=appointment_datetime)
 
     new_appointment.save_to_db()
     return jsonify({'message': 'Запис успішно створений'})
