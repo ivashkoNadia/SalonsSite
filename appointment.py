@@ -1,10 +1,52 @@
-from Entity.User import Appointment, Salon, Service, User
+from Entity.User import User
+from Entity.Salons import Salon
+from Entity.Appointment import Appointment
 from flask import Flask, request, jsonify
 import json
 from datetime import datetime, timedelta
 import os
 from PIL import Image
 
+def fun_add_appointment(data):
+    user_id = data.get('user_id')
+    salon_id = data.get('salon_id')
+    service_name = data.get('service_name')
+    appointment_datetime = data.get('datetime')
+
+    # Перевірка, чи не існує вже запису на цей день та час для цього користувача та процедури
+    existing_appointment = Appointment.query.filter_by(salon_id=salon_id, service_name=service_name,
+                                                       datetime=appointment_datetime).first()
+    if existing_appointment:
+        available_hours = []
+        for hour in range(9, 20, 2):  # Перевіряємо години з 09:00 до 19:00 з інтервалом 2 години
+            new_datetime = datetime.strptime(appointment_datetime, '%Y-%m-%d %H:%M').replace(hour=hour,
+                                                                                             minute=0)  # Встановлюємо годину та хвилину
+            new_datetime_str = new_datetime.strftime('%Y-%m-%d %H:%M')
+            existing_appointment = Appointment.query.filter_by(salon_id=salon_id, service_name=service_name,
+                                                               datetime=new_datetime).first()
+            if not existing_appointment:
+                split_string = new_datetime_str.split(' ')
+                # Отримання години
+                hour_ = split_string[1]
+                available_hours.append(hour_)
+        str_m = "Запис на цей час процедури вже існує \n Доступні години в цей день:" + str(available_hours)
+        return jsonify({'error': str_m})
+
+    # Перевірка, щоб запис не був раніше ніж за 2 години вперед
+    current_datetime = datetime.now()
+    appointment_datetime_obj = datetime.strptime(appointment_datetime, '%Y-%m-%d %H:%M')
+    if appointment_datetime_obj < current_datetime + timedelta(hours=2):
+        return jsonify({'error': 'Неможливо записатися раніше, ніж за дві години від поточного часу'})
+
+    user_id_dict = json.loads(user_id)
+    user_id = user_id_dict['user_id']
+
+    # Створення нового запису
+    new_appointment = Appointment(user_id=user_id, salon_id=salon_id, service_name=service_name,
+                                  datetime=appointment_datetime)
+
+    new_appointment.save_to_db()
+    return jsonify({'message': 'Запис успішно створений'})
 
 def fun_user_appointments(data):
     user_id = data.get('user_id')

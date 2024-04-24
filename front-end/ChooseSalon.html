@@ -219,6 +219,11 @@
     // Отримуємо salon_id з sessionStorage
     var salonId = sessionStorage.getItem('salon');
 
+    if ((!userId || !salonId || !procedure || !date || !time) ||(procedure==0)) {
+        alert("Будь ласка, заповніть всі поля форми.");
+        return;
+    }
+
     // Формуємо об'єкт з даними
     var data = {
         user_id: userId,
@@ -260,6 +265,11 @@ function addFeedback() {
     // Отримання значень з поля введення тексту відгуку та рейтингу
     var text = document.getElementById('text_feedback').value;
     var rating = selectedStar; // Використовуємо значення змінної, яку ми визначили раніше
+
+    if (!rating) {
+        alert('Будь ласка, виберіть кількість зірок.');
+        return;
+    }
 
     // Отримання ідентифікатора користувача та салону з sessionStorage
     var user_id = sessionStorage.getItem('user');

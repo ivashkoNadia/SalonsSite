@@ -1,11 +1,60 @@
-from Entity.User import Appointment, Salon, Service
+from Entity.Appointment import Appointment
+from Entity.Service import Service
+from Entity.Salons import Salon
 from flask import Flask, request, jsonify
 import json
 import io
 import base64
-
-
 from PIL import Image
+
+def fun_salons_availavle():
+    salons = Salon.query.filter_by(approve=1).all()
+
+    salon_data = [{'id': salon.id, 'district': salon.district, 'name': salon.name, 'rating': salon.rating,
+                   'owner_id': salon.owner_id,
+                   'photo': base64.b64encode(salon.photo).decode('utf-8') if salon.photo else None} for salon in salons]
+
+    return jsonify({'salons': salon_data})
+
+def fun_salon_details(data, db):
+    salon_id = data.get('salon_id')
+    salon = db.session.get(Salon, int(salon_id))
+
+    if salon:
+        salon_data = {
+            "id": salon.id,
+            "district": salon.district,
+            "name": salon.name,
+            'photo': base64.b64encode(salon.photo).decode('utf-8') if salon.photo else None,
+            "rating": salon.rating,
+            "approve": salon.approve,
+            "street": salon.street,
+            "social": salon.social
+        }
+        return jsonify({'salon': salon_data})
+    else:
+        return jsonify({'error': 'Салон з вказаним ID не знайдено'})
+
+def fun_salon_services(data):
+    salon_id = data.get('salon_id')
+    salon_services = Service.query.filter_by(salon_id=int(salon_id)).all()
+
+    if not salon_services:
+        return jsonify({'message': 'No services found for the specified salon ID'}), 404
+
+    serialized_services = []
+    for service in salon_services:
+        serialized_services.append({
+            'id': service.id,
+            'salon_id': service.salon_id,
+            'name': service.name,
+            'price': service.price
+        })
+
+    # Return the serialized services
+    return jsonify({'services': serialized_services})
+
+
 def fun_photo(request_, db):
     photo = request_.files['photo']
     if photo:

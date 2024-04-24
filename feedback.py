@@ -1,6 +1,38 @@
-from Entity.User import Feedback
+from Entity.Feedback import Feedback
+from Entity.Salons import Salon
 from flask import Flask, request, jsonify
+import json
+from datetime import datetime
 
+def fun_add_feedback(data, db):
+    user_id = data.get('user_id')
+    text = data.get('text')
+    rating = data.get('rating')
+    salon_id = data.get('salon_id')
+
+    user_id_dict = json.loads(user_id)
+    user_id = user_id_dict['user_id']
+
+    # Створення нового об'єкту Feedback
+    new_feedback = Feedback(user_id=int(user_id), text=text, rating=int(rating), salon_id=int(salon_id),
+                            datetime=datetime.now())
+
+    salon = Salon.query.filter_by(id=int(salon_id)).first()
+    rating_amount = salon.rating_amount
+    star = salon.rating
+    new_rating = (star * rating_amount + rating) / (rating_amount + 1)
+    salon.rating = new_rating
+    salon.rating_amount += 1
+    db.session.merge(salon)  # Оновлення користувача
+    db.session.commit()
+
+    try:
+        # Додавання об'єкту до бази даних
+        new_feedback.save_to_db()
+        return jsonify({'message': 'Feedback успішно доданий'})
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': 'Помилка при додаванні feedback'})
 
 def fun_feedback(data):
     salon_id = data.get('salon_id')

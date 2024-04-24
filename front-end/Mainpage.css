@@ -1,7 +1,6 @@
 body {
     margin: 0;
     padding: 0;
-    /*background-color: #f6e5e5;  світло-рожева заливка фону */
     background: linear-gradient(109.6deg, rgb(197, 173, 219) 11.2%, rgb(245, 226, 226) 91.1%);
     display: flex;
     flex-direction: column; /* вирівнювання всіх елементів вертикально */
@@ -81,7 +80,7 @@ body {
 
 #salonList {
             display: flex;
-            margin-top: 20px;
+            margin-top: 15px;
             flex-direction: column;
             width: 70%;
              
@@ -122,4 +121,104 @@ body {
     margin-top: 15px;
 }
 
-        
+   
+
+/*.search-container {
+    display: flex;
+    align-items: center; 
+    justify-content: center;
+    width: 80%;
+}*/
+
+.search-container > * {
+    margin: 0 5px; /* Задаємо відступи між елементами */
+}
+
+.search-container {
+    padding-top: 18px;
+    display: flex;
+    justify-content: center;
+    width: 70%;
+    margin: 0 auto; /* Вирівнюємо контейнер по центру */
+}
+
+.searchInput {
+    width: 70%; /* Ширина першого стовпчика */
+    padding: 10px; /* Відступи всередині поля вводу */
+    margin-right: 10px; /* Відступ між полем вводу і кнопками */
+    border: none;
+    border-radius: 5px;
+}
+
+.search-but,
+.more-search-but {
+    width: 10%; /* Ширина другого та третього стовпчика */
+    background-color: #352961; /* темно-фіолетовий колір кнопки */
+    color: #f6e5e5; 
+    padding: 10px 20px; /* відступи всередині кнопок */
+    border: none;
+    border-radius: 5px; /* закруглені кути */
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.search-but:hover,
+.more-search-but:hover {
+    background-color: #774181; /* Колір кнопок при наведенні */
+}
+
+.form-frame {
+    width: 70%;
+    margin: 0 auto; /* Центрування контейнера */
+    margin-top: 20px;
+    border: 1px solid #352961; /* Фіолетова тонка рамка */
+    padding: 10px; /* Внутрішні відступи */
+    padding-left: 50px;
+}
+
+
+
+.district-select,
+#minRating,
+#maxRating {
+    margin-bottom: 10px; /* Відступ між елементами */
+}
+
+.applyfilter-but,
+.cancel-but {
+     width: 150px; /* Ширина другого та третього стовпчика */
+    background-color: #352961; /* темно-фіолетовий колір кнопки */
+    color: #f6e5e5; 
+    padding: 8px 10px; /* відступи всередині кнопок */
+    border: none;
+    border-radius: 5px; /* закруглені кути */
+    cursor: pointer;
+    font-size: 15px;
+    margin-top: 10px; /* Відступ зверху */
+    align-items: center;
+    margin-left: 20px;
+}
+
+.rating-filt{
+    margin-left: 40px;
+}
+
+.footer {
+   bottom: 0; /* Розташування внизу сторінки */
+  width: 100%; /* Ширина 100% */
+  background-color: #352961; /* Колір фону */
+  color: #f6e5e5; /* Колір тексту */
+  display: flex; /* Використання flexbox для розміщення елементів */
+  justify-content: center; /* Розподіл вільного простору між елементами */
+  align-items: center; /* Центрування елементів по вертикалі */
+  margin-top: 15px;
+}
+
+.label {
+ 
+  text-align: center; /* Центрування тексту по горизонталі */
+
+}
+
+
+

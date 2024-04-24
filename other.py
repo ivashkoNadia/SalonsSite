@@ -1,4 +1,4 @@
-from Entity.User import Service
+from Entity.Service import Service
 from flask import Flask, request, jsonify
 
 def fun_getservices(salon_id):

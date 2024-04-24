@@ -14,10 +14,26 @@
                 <button class="pink-button" onclick="window.location.href='Appointment.html'">Мої записи</button>
             </div>
         </div>
+
+        <div class="search-container">
+            <input class="searchInput" type="text" id="searchInput" placeholder="Пошук за назвою">
+            <button class ="search-but" onclick="searchByName()">Пошук</button>
+            <button class="more-search-but" onclick="advancedSearch()">Фільтри</button>
+        </div>
+
+        <div id="filters-container" class="filters-container"></div>
+
+
         <div class="center_div">
         <div id="salonList"></div>
     </div>
+    <footer class="footer">
+    <p>&copy; Наші контакти: admin@gmail.com</p>
+  </footer>
     </div>
+
+    
+
     <script src="mainpage.js"></script>
     <script src="all_salons.js"></script>
 </body>
