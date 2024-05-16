@@ -82,12 +82,12 @@ def fun_delete_appointment(appointment_id, db):
         appointment = Appointment.query.get(appointment_id)
 
         if appointment:
-            if datetime.now() <= (appointment.datetime - timedelta(days=1)):
+            if datetime.now() <= (appointment.datetime - timedelta(hours=3)):
                 db.session.delete(appointment)
                 db.session.commit()
                 return jsonify({'message': 'Запис успішно видалено'})
             else:
-                return jsonify({'message': 'Запис можна скасувати не пізніше, ніж за добу'})
+                return jsonify({'message': 'Запис можна скасувати не пізніше, ніж за 3 години'})
         else:
             return jsonify({'message': 'Запис не знайдено'})
 
