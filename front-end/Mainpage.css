@@ -121,14 +121,6 @@ body {
     margin-top: 15px;
 }
 
-   
-
-/*.search-container {
-    display: flex;
-    align-items: center; 
-    justify-content: center;
-    width: 80%;
-}*/
 
 .search-container > * {
     margin: 0 5px; /* Задаємо відступи між елементами */

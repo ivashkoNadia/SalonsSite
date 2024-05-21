@@ -4,6 +4,7 @@ import salon
 import other
 import feedback
 import appointment
+import reset_password
 import user
 from Entity.User import db
 import Connection.main_data as main_data
@@ -105,6 +106,10 @@ def get_services_by_salon_id(salon_id):
 @app.route("/edit_services/<int:salon_id>", methods=["POST"])
 def update_services(salon_id):
     return other.fun_editservices(salon_id, db, request)
+
+@app.route("/reset_password", methods=["POST"])
+def reset_password_():
+    return  reset_password.fun_reset_passsword(request.get_json(), db)
 
 if __name__ == '__main__':
     app.run(debug=True)
